@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Leto 데이터랩</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20160504_295%2Fzzlidde_1462360339348GT0M2_PNG%2F2016-05-04_20.11.40.png&type=a340">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        /* 이미지에 대한 스타일 */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip-container img {
+            width: 200px; /* 이미지의 너비 */
+            height: auto; /* 이미지의 높이 자동 조절 */
+        }
+        /* 툴팁에 대한 스타일 */
+        .tooltip {
+            visibility: hidden;
+            background-color: black;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 100%; /* 툴팁이 이미지 아래에 위치하도록 설정 */
+            left: 50%; /* 툴팁이 이미지 중앙에 위치하도록 설정 */
+            transform: translateX(-50%); /* 가운데 정렬을 위한 변환 */
+            width: 120px; /* 툴팁의 너비 */
+        }
+        .tooltip-container:hover .tooltip {
+            visibility: visible;
+        }
+    </style>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Rubik:700&display=swap");
+        * {
+            box-sizing: border-box;
+        }
+        *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Lato", sans-serif;
+            font-weight: 900;
+            font-style: normal;
+        }
+        button {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            outline: none;
+            border: 0;
+            vertical-align: middle;
+            text-decoration: none;
+            font-size: inherit;
+            font-family: inherit;
+        }
+        button.learn-more {
+            font-weight: 600;
+            color: #382b22;
+            text-transform: uppercase;
+            padding: 1.25em 2em;
+            background: #fff0f0;
+            border: 2px solid #b18597;
+            border-radius: 0.75em;
+            transform-style: preserve-3d;
+            transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+        }
+        button.learn-more::before {
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #f9c4d2;
+            border-radius: inherit;
+            box-shadow: 0 0 0 2px #b18597, 0 0.625em 0 0 #ffe3e2;
+            transform: translate3d(0, 0.75em, -1em);
+            transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+        }
+        button.learn-more:hover {
+            background: #ffe9e9;
+            transform: translate(0, 0.25em);
+        }
+        button.learn-more:hover::before {
+            box-shadow: 0 0 0 2px #b18597, 0 0.5em 0 0 #ffe3e2;
+            transform: translate3d(0, 0.5em, -1em);
+        }
+        button.learn-more:active {
+            background: #ffe9e9;
+            transform: translate(0em, 0.75em);
+        }
+        button.learn-more:active::before {
+            box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
+            transform: translate3d(0, 0, -1em);
+        }
+    </style>
+    <style>
+        /* 검색 입력란과 버튼 스타일링 */
+        .search {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"], button {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 차트 영역 스타일링 */
+        #chart {
+            width: 100%;
+            height: 500px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script th:inline="javascript">
+        function pageUrl() {
+            var sHref = location.href;
+            return sHref;
+        }
+
+
+        window.onload = function() {
+            document.getElementById("drawLine").addEventListener('click', function() {
+                drawChart('line');
+
+            });
+            document.getElementById("drawBar").addEventListener('click', function() {
+                drawChart('bar');
+
+            });
+
+            drawChart('line');
+        };
+
+        function drawChart(type) {
+            var myChart = echarts.init(document.getElementById('chart'));
+
+            var xAxisData = [[${xAxisData}]];
+            let seriesData1 = [[${seriesData1}]];
+            let seriesData2 = [];
+            let seriesData3 = [];
+            let seriesData4 = [];
+            let seriesData5 = [];
+
+            if ([[${query2}]]!="") {
+                seriesData2 = [[${seriesData2}]];
+            }
+
+            if ([[${query3}]]!="") {
+                seriesData3 = [[${seriesData3}]];
+            }
+
+            if ([[${query4}]]!="") {
+                seriesData4 = [[${seriesData4}]];
+            }
+
+            if ([[${query5}]]!="") {
+                seriesData5 = [[${seriesData5}]];
+            }
+
+            let legendData = []; // 범례 데이터를 동적으로 저장할 배열
+
+            if ([[${query1}]] !== "") {
+                legendData.push('[[${query1}]]');
+            }
+            if ([[${query2}]]!="") {
+                legendData.push('[[${query2}]]');
+            }
+            if ([[${query3}]]!="") {
+                legendData.push('[[${query3}]]');
+            }
+            if ([[${query4}]]!="") {
+                legendData.push('[[${query4}]]');
+            }
+            if ([[${query5}]]!="") {
+                legendData.push('[[${query5}]]');
+            }
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    position: function (point, params, dom, rect, size) {
+                        var x = 150; // x 좌표 조절
+                        var y = 50; // y 좌표 조절
+                        console.log(point[0])
+                        if(point[0]<510){
+                            return [point[0], point[1] - y];
+                        } else if (point[0]>510){
+                            return [point[0]-x, point[1] - y];
+                        }
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: legendData
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '[[${query1}]]',
+                        data: seriesData1,
+                        type: type,
+                        color: 'rgb(255, 0, 0)'
+                    },
+                    {
+                        name: '[[${query2}]]',
+                        data: seriesData2,
+                        type: type,
+                        color: 'rgb(200, 200, 0)'
+                    },
+                    {
+                        name: '[[${query3}]]',
+                        data: seriesData3,
+                        type: type,
+                        color: 'rgb(0, 200, 200)'
+                    },
+                    {
+                        name: '[[${query4}]]',
+                        data: seriesData4,
+                        type: type,
+                        color: 'rgb(0, 100, 235)'
+                    },
+                    {
+                        name: '[[${query5}]]',
+                        data: seriesData5,
+                        type: type,
+                        color: 'rgb(200, 200, 255)'
+                    }
+                ],
+                label: {
+                    show: false,
+                    position: 'top',
+                }
+            };
+            myChart.setOption(option);
+        }
+
+    </script>
+</head>
+
+<body>
+<a href="/" target="_blank">
+    <img src="https://ssl.pstatic.net/static.datalab/img2019/datalab_og_244x244.jpg" alt="Leto 데이터랩" height="100" width="150">
+</a>
+
+<form method="get">
+    <div class="search">
+        <input type="text" name="query1" placeholder="검색어1 입력(필수)" required/>
+
+        <input type="text" name="query2" placeholder="검색어2 입력"/>
+
+        <input type="text" name="query3" placeholder="검색어3 입력"/>
+
+        <input type="text" name="query4" placeholder="검색어4 입력"/>
+
+        <input type="text" name="query5" placeholder="검색어5 입력"/>
+
+        <strong class="title">기간</strong>
+        <label for="selectYear1"></label><select name="year" id="selectYear1">
+        <option value="2016">2016</option>
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+    </select>
+        <label for="selectMonth1"></label><select name="month" id="selectMonth1">
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="03">03</option>
+        <option value="04">04</option>
+        <option value="05">05</option>
+        <option value="06">06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+        <option value="09">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+    </select>
+        <label for="selectDay1"></label><select name="day" id="selectDay1">
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="03">03</option>
+        <option value="04">04</option>
+        <option value="05">05</option>
+        <option value="06">06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+        <option value="09">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+    </select><small> 에서</small>
+        <label for="selectYear2"></label><select name="year2" id="selectYear2">
+        <option value="2016">2016</option>
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+    </select>
+        <label for="selectMonth2"></label><select name="month2" id="selectMonth2">
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="03">03</option>
+        <option value="04">04</option>
+        <option value="05">05</option>
+        <option value="06">06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+        <option value="09">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+    </select>
+        <label for="selectDay2"></label><select name="day2" id="selectDay2">
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="03">03</option>
+        <option value="04">04</option>
+        <option value="05">05</option>
+        <option value="06">06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+        <option value="09">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+    </select><small> 까지</small>
+        <label for="selectDayType"></label><select name="select_day_week_month" id="selectDayType">
+        <option value="date">일간</option>
+        <option value="week">주간</option>
+        <option value="month">월간</option>
+    </select>
+        <button class="learn-more" type="submit">검색</button>
+    </div>
+    <div class="form_row mb4">
+        <strong class="title">범위</strong>
+        <div class="set_col set_target_chk _checkbox_ui">
+            <div class="set_chk">
+                <span class="select_chk v1">
+                    <input type="checkbox" id="item_device_0" class="chk _check_all" name="device[]" value="">
+                    <label class="lbl" for="item_device_0">전체</label>
+                </span>
+                <span class="_item_check_div _device_div" style="margin-left:11px;">
+                    <span class="select_chk v1">
+                        <input type="checkbox" id="item_device_1" name="device[]" value="mo" class="chk">
+                        <label class="lbl" for="item_device_1">모바일</label>
+                    </span>
+                    <span class="select_chk v1">
+                        <input type="checkbox" id="item_device_2" name="device[]" value="pc" class="chk">
+                        <label class="lbl" for="item_device_2">PC</label>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form_row mb4">
+        <strong class="title">성별</strong>
+        <div class="set_col set_target_chk _checkbox_ui">
+            <div class="set_chk">
+            <span class="select_chk v1">
+                <input type="checkbox" id="item_gender_0" class="chk _check_all" name="gender[]" value="">
+                <label class="lbl" for="item_gender_0">전체</label>
+            </span>
+                <span class="_item_check_div _gender_div" style="margin-left:11px;">
+                <span class="select_chk v1">
+                    <input type="checkbox" id="item_gender_1" class="chk" name="gender[]" value="f" >
+                    <label class="lbl" for="item_gender_1">여성</label>
+                </span>
+                <span class="select_chk v1">
+                    <input type="checkbox" id="item_gender_2" class="chk" name="gender[]" value="m" >
+                    <label class="lbl" for="item_gender_2">남성</label>
+                </span>
+            </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form_row">
+        <strong class="title v2">연령선택</strong>
+        <div class="set_col set_target_chk _checkbox_ui">
+            <div class="set_chk">
+            <span class="select_chk v1">
+                <input type="checkbox" id="item_age_0" class="chk _check_all" name="age[]" value="">
+                <!-- [D] 텍스트 활성화 active 추가 -->
+                <label class="lbl " for="item_age_0">전체</label>
+            </span>
+            </div>
+            <div class="set_chk _item_check_div _age_div">
+            <span class="select_chk v1">
+                <input type="checkbox" id="item_age_1" class="chk" name="age[]" value="1">
+                <label class="lbl " for="item_age_1">~12</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_2" class="chk" name="age[]" value="2">
+                <label class="lbl " for="item_age_2">13~18</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_3" class="chk" name="age[]" value="3">
+                <label class="lbl " for="item_age_3">19~24</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_4" class="chk" name="age[]" value="4">
+                <label class="lbl " for="item_age_4">25~29</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_5" class="chk" name="age[]" value="5">
+                <label class="lbl " for="item_age_5">30~34</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_6" class="chk" name="age[]" value="6">
+                <label class="lbl " for="item_age_6">35~39</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_7" class="chk" name="age[]" value="7">
+                <label class="lbl " for="item_age_7">40~44</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_8" class="chk" name="age[]" value="8">
+                <label class="lbl " for="item_age_8">45~49</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_9" class="chk" name="age[]" value="9">
+                <label class="lbl " for="item_age_9">50~54</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_10" class="chk" name="age[]" value="10">
+                <label class="lbl " for="item_age_10">55~59</label>
+            </span>
+                <span class="select_chk v1">
+                <input type="checkbox" id="item_age_11" class="chk" name="age[]" value="11">
+                <label class="lbl " for="item_age_11">60~</label>
+            </span>
+            </div>
+        </div>
+    </div>
+</form>
+<form method="post">
+    <div>
+        <input type="hidden" name="url" id="urlInput" value="">
+        <script>
+            if (pageUrl()!="http://localhost:8080/index_result"&&pageUrl()!="http://localhost:8080/index_result?url=") {
+                document.getElementById('urlInput').value = pageUrl();
+            }
+        </script>
+        <h1></h1>
+        <button class="learn-more" type="submit">즐겨찾기 추가</button>
+        <h1></h1>
+    </div>
+</form>
+
+<script>
+    // 타임리프 변수에서 URL을 가져옴 (예시로 고정된 URL을 사용하고 있음)
+    var timeLeafURL = [[${url1}]];
+
+    // 동적 링크에 URL 설정
+    document.getElementById("dynamicLink1").href = timeLeafURL;
+
+    // 클릭 이벤트에 대한 처리
+    document.getElementById("dynamicLink1").addEventListener("click", function(event) {
+        // 기본 동작인 링크 이동을 막음
+        event.preventDefault();
+
+        // 타임리프 변수로 설정된 URL로 이동
+        window.location.href = timeLeafURL;
+    });
+</script>
+<li><a th:href="@{${url1}}">즐겨찾기1</a><p th:text="${url1}"></p></li>
+<li><a th:href="@{${url2}}">즐겨찾기2</a><p th:text="${url2}"></p></li>
+<li><a th:href="@{${url3}}">즐겨찾기3</a><p th:text="${url3}"></p></li>
+<li><a th:href="@{${url4}}">즐겨찾기4</a><p th:text="${url4}"></p></li>
+<li><a th:href="@{${url5}}">즐겨찾기5</a><p th:text="${url5}"></p></li>
+
+
+<hr/>
+<p>검색어1: <span th:text="${query1}"></span></p>
+<p>검색어2: <span th:text="${query2}"></span></p>
+<p>검색어3: <span th:text="${query3}"></span></p>
+<p>검색어4: <span th:text="${query4}"></span></p>
+<p>검색어5: <span th:text="${query5}"></span></p>
+<hr/>
+<div>
+    <button id="drawLine" class="learn-more" value="line">Line Chart</button>
+    <button id="drawBar" class="learn-more" value="bar">Bar Chart</button>
+</div>
+<h1></h1>
+<div id="chart"></div>
+</body>
+</html>
