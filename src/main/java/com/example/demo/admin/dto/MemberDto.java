@@ -25,4 +25,5 @@ public class MemberDto  {
     //추가컬럼
     long totalCount;
     long seq;
+
 }
