@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/sku
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1q2w3e4r
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: qjawns314@gmail.com
+    password: jbnz buhx nprk mhlp
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
