@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <title>메인 페이지</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/Logo.png">
+    <style>
+        body {
+            background: #f2f2f2;
+        }
+        h1 {
+            position: relative;
+            text-align: center;
+            color: #353535;
+            font-size: 50px;
+            font-family: "Cormorant Garamond", serif;
+        }
+        h1:before{
+            position: absolute;
+            content: "";
+            bottom: -10px;
+            width: 35%;
+            height: 2px;
+            background-color: #98d9e1;
+            background-image: linear-gradient(315deg, #fea 0%, #a95 74%);
+        }
+
+        p {
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            text-align: center;
+            font-size: 18px;
+            color: #676767;
+        }
+        .frame {
+            width: 90%;
+            margin: 40px auto;
+            text-align: center;
+        }
+        button {
+            margin: 20px;
+        }
+        .custom-btn {
+            width: 160px;
+            height: 40px;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px 25px;
+            font-family: '한컴 말랑말랑 Regular', sans-serif;
+            font-size: 16px;
+            font-weight: 900;
+            font-style: normal;
+            text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+            text-decoration: none;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            box-shadow: inset 0px 1px 0px rgba(255,255,255,1),0px 1px 3px rgba(0,0,0,0.3);
+            outline: none;
+            border: 1px solid #ba6;
+        }
+        .custom-btn:active{
+            -webkit-transform: translateY(2px);
+            transform: translateY(2px);
+        }
+
+        /* 1 */
+        .btn-1{
+            backface-visibility: hidden;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+            background: linear-gradient(180deg,#fea 0%,#dc8 49%,#a95 51%,#dc8 100%);
+            border-radius: 5px;
+        }
+
+        /* 2 */
+        .btn-2{
+            background: linear-gradient(top, #a95, #f2f2f2 25%, #ffffff 38%, #c5c5c5 63%, #f7f7f7 87%, #a95);
+            background: -webkit-linear-gradient(top, #a95, #fea 25%, #ffffff 38%, #dc8  63%, #fea 87%, #a95);
+        }
+
+        /* 3 */
+        .btn-3{
+            background: -webkit-gradient(linear, left top, left bottom, from(#a95), to(#fea));
+        }
+
+        /* 4 */
+        .btn-4{
+            color: #fff;
+            background-image: -webkit-repeating-linear-gradient(left, rgba(255, 238, 170, 0) 0%, rgba(255, 238, 170, 0) 3%, rgba(255, 238, 170, .1) 3.75%),
+            -webkit-repeating-linear-gradient(left, rgba(170, 153, 85, 0) 0%, rgba(170, 153, 85, 0) 2%, rgba(170, 153, 85, .03) 2.25%),
+            -webkit-repeating-linear-gradient(left, rgba(255, 238, 170, 0) 0%, rgba(255, 238, 170, 0) .6%, rgba(255, 238, 170, .15) 1.2%),
+
+            linear-gradient(180deg, #a95 0%,
+                    #fea 47%,
+                    #dc8 53%,
+                    #fea 100%);
+
+        }
+
+        /* 5 */
+        .btn-5{
+            backface-visibility: hidden;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+            border-color: #7c7c7c;
+            background: linear-gradient(180deg,#e6e6e6 0%,rgba(0, 0, 0, 0.25) 49%, rgba(38, 38, 38, 0.6) 51%,rgba(0, 0, 0, 0.25) 100%);
+            border-radius: 5px;
+        }
+
+        /* 6 */
+        .btn-6{
+            border-color: #7c7c7c;
+            background: linear-gradient(top, rgba(38, 38, 38, 0.8), #e6e6e6 25%, #ffffff 38%, #c5c5c5 63%, #f7f7f7 87%, rgba(38, 38, 38, 0.8));
+            background: -webkit-linear-gradient(top, rgba(38, 38, 38, 0.5), #e6e6e6 25%, #ffffff 38%, rgba(0, 0, 0, 0.25)  63%, #e6e6e6 87%, rgba(38, 38, 38, 0.4));
+        }
+
+        /* 7 */
+        .btn-7{
+            border-color: #7c7c7c;
+            background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.25)), to(#e6e6e6));
+        }
+
+        /* 8 */
+        .btn-8{
+            border-color: #7c7c7c;
+            background-image: -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
+            -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
+            -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
+
+            linear-gradient(180deg, hsl(0,0%,78%)  0%,
+                    hsl(0,0%,90%) 47%,
+                    hsl(0,0%,78%) 53%,
+                    hsl(0,0%,70%)100%);
+        }
+
+        /* 9 */
+        .btn-9{
+            backface-visibility: hidden;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+            border-color: #D9A3A9;
+            background: linear-gradient(180deg,#FFE6E9 0%,#DDA6AE 49%, #B76E79 51%,#DDA6AE 100%);
+            border-radius: 5px;
+        }
+
+        /* 10 */
+        .btn-10{
+            border-color: #D9A3A9;
+            background: linear-gradient(top, #DDA6AE, #FFE6E9 25%, #ffffff 38%, #FFE6E9 63%, #f7f7f7 87%, rgba(38, 38, 38, 0.8));
+            background: -webkit-linear-gradient(top,  #DDA6AE, #FFE6E9 25%, #ffefef 38%, #D9A3A9  63%, #FFE6E9 87%, #DDA6AE);
+        }
+
+        /* 11 */
+        .btn-11{
+            border-color: #D9A3A9;
+            background: -webkit-gradient(linear, left top, left bottom, from(#D9A3A9), to(#FFE6E9));
+        }
+
+        /* 12 */
+        .btn-12{
+            border-color: #D9A3A9;
+            background-image: -webkit-repeating-linear-gradient(left, rgba(255, 230, 233,0) 0%, rgba(255, 230, 233,0)  3%, rgba(255, 230, 233,.1) 3.75%),
+            -webkit-repeating-linear-gradient(left, rgba(183, 110, 121,0) 0%, rgba(183, 110, 121,0)   2%, rgba(183, 110, 121, .2) 2.25%),
+            -webkit-repeating-linear-gradient(left, rgba(255, 230, 233,0) 0%, rgba(255, 230, 233,0) .6%, rgba(255, 230, 233,.3) 1.1%),
+
+            linear-gradient(180deg, #D9A3A9  0%,
+                    rgba(255, 230, 233,1) 47%,
+                    #D9A3A9 53%,
+                    rgba(255, 230, 233,.7)100%);
+        }
+
+        /* 13 */
+        .btn-13{
+            backface-visibility: hidden;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+            border-color: #111;
+            color: #555;
+            background: linear-gradient(180deg,#555 0%,#222 49%, #000 51%,#222 100%);
+
+    </style>
+    <style>
+        /* 검색 입력란과 버튼 스타일링 */
+        .search {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            color: azure;
+        }
+        .searchType{
+            text-align: center;
+        }
+
+        body {
+            text-align: center;
+            flex-flow: wrap;
+            font-size: 17px;
+            font-family: 'Titillium Web', sans-serif;
+        }
+
+        input[type="text"], button {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font: 700 1.2rem 'Roboto Slab', sans-serif;
+            &:focus { outline: 2px dotted #55d7dc; }
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: gray;
+        }
+        #chart {
+            width: 100%;
+            height: 500px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 차트 영역 스타일링 */
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script th:inline="javascript">
+        function pageUrl() {
+            var sHref = decodeURI(location.href);
+            return sHref;
+        }
+
+        window.onload = function() {
+            document.getElementById("drawLine").addEventListener('click', function() {
+                drawChart('line');
+            });
+            document.getElementById("drawBar").addEventListener('click', function() {
+                drawChart('bar');
+
+            });
+
+            drawChart('line');
+        };
+
+        function drawChart(type) {
+            var myChart = echarts.init(document.getElementById('chart'));
+
+            var xAxisData = [[${xAxisData}]];
+            let seriesData1 = [[${seriesData1}]];
+            let seriesData2 = [];
+            let seriesData3 = [];
+            let seriesData4 = [];
+            let seriesData5 = [];
+
+            if ([[${query2}]]!="") {
+                seriesData2 = [[${seriesData2}]];
+            }
+
+            if ([[${query3}]]!="") {
+                seriesData3 = [[${seriesData3}]];
+            }
+
+            if ([[${query4}]]!="") {
+                seriesData4 = [[${seriesData4}]];
+            }
+
+            if ([[${query5}]]!="") {
+                seriesData5 = [[${seriesData5}]];
+            }
+
+            let legendData = []; // 범례 데이터를 동적으로 저장할 배열
+
+            if ([[${query1}]] !== "") {
+                legendData.push('[[${query1}]]');
+            }
+            if ([[${query2}]]!="") {
+                legendData.push('[[${query2}]]');
+            }
+            if ([[${query3}]]!="") {
+                legendData.push('[[${query3}]]');
+            }
+            if ([[${query4}]]!="") {
+                legendData.push('[[${query4}]]');
+            }
+            if ([[${query5}]]!="") {
+                legendData.push('[[${query5}]]');
+            }
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    position: function (point, params, dom, rect, size) {
+                        var x = 150; // x 좌표 조절
+                        var y = 50; // y 좌표 조절
+                        console.log(point[0])
+                        if(point[0]<510){
+                            return [point[0], point[1] - y];
+                        } else if (point[0]>510){
+                            return [point[0]-x, point[1] - y];
+                        }
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: legendData
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '[[${query1}]]',
+                        data: seriesData1,
+                        type: type,
+                        color: 'rgb(255, 0, 0)'
+                    },
+                    {
+                        name: '[[${query2}]]',
+                        data: seriesData2,
+                        type: type,
+                        color: 'rgb(200, 200, 0)'
+                    },
+                    {
+                        name: '[[${query3}]]',
+                        data: seriesData3,
+                        type: type,
+                        color: 'rgb(0, 200, 200)'
+                    },
+                    {
+                        name: '[[${query4}]]',
+                        data: seriesData4,
+                        type: type,
+                        color: 'rgb(0, 100, 235)'
+                    },
+                    {
+                        name: '[[${query5}]]',
+                        data: seriesData5,
+                        type: type,
+                        color: 'rgb(200, 200, 255)'
+                    }
+                ],
+                label: {
+                    show: false,
+                    position: 'top',
+                }
+            };
+            myChart.setOption(option);
+        }
+
+    </script>
+</head>
+
+<body>
+<a href="/index_result" target="_blank">
+    <img src="/Logo.png" alt="Leto 데이터랩 로고" height="146" width="255">
+</a>
+<h3></h3>
+<div>
+
+        <form method="get">
+            <div class="search">
+                <input type="text" name="query1" required/>
+
+                <input type="text" name="query2"/>
+
+                <input type="text" name="query3"/>
+
+                <input type="text" name="query4"/>
+
+                <input type="text" name="query5"/>
+            </div>
+            <div>
+                <strong class="title">기간</strong>
+                <label for="selectYear1"></label><select name="year" id="selectYear1">
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select>
+                <label for="selectMonth1"></label><select name="month" id="selectMonth1">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+                <label for="selectDay1"></label><select name="day" id="selectDay1">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+            </select><small> 에서</small>
+                <label for="selectYear2"></label><select name="year2" id="selectYear2">
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select>
+                <label for="selectMonth2"></label><select name="month2" id="selectMonth2">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+                <label for="selectDay2"></label><select name="day2" id="selectDay2">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+            </select><small> 까지</small>
+                <label for="selectDayType"></label><select name="select_day_week_month" id="selectDayType">
+                <option value="date">일간</option>
+                <option value="week">주간</option>
+                <option value="month">월간</option>
+            </select>
+                <strong class="title">범위</strong>
+                <span class="select_box v1">
+                <select name="device" id="select_box_mopc">
+                    <option value="">전체</option>
+                    <option value="mo">모바일</option>
+                    <option value="pc">PC</option>
+                </select>
+            </span>
+                <strong class="title">성별</strong>
+                <select name="gender" id="select_box_gender">
+                    <option value="">전체</option>
+                    <option value="f">여성</option>
+                    <option value="m">남성</option>
+                </select>
+            </div>
+            <h3></h3>
+            <div class="form_row">
+                <div class="set_col set_target_chk _checkbox_ui">
+                    <div class="set_chk _item_check_div _age_div">
+                        <strong class="title v2">연령선택</strong>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_all" class="chk" name="age" value="">
+                    <label class="lbl " for="item_age_all">전체</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_1" class="chk" name="age" value="1">
+                    <label class="lbl " for="item_age_1">~12</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_2" class="chk" name="age" value="2">
+                    <label class="lbl " for="item_age_2">13~18</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_3" class="chk" name="age" value="3">
+                    <label class="lbl " for="item_age_3">19~24</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_4" class="chk" name="age" value="4">
+                    <label class="lbl " for="item_age_4">25~29</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_5" class="chk" name="age" value="5">
+                    <label class="lbl " for="item_age_5">30~34</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_6" class="chk" name="age" value="6">
+                    <label class="lbl " for="item_age_6">35~39</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_7" class="chk" name="age" value="7">
+                    <label class="lbl " for="item_age_7">40~44</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_8" class="chk" name="age" value="8">
+                    <label class="lbl " for="item_age_8">45~49</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_9" class="chk" name="age" value="9">
+                    <label class="lbl " for="item_age_9">50~54</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_10" class="chk" name="age" value="10">
+                    <label class="lbl " for="item_age_10">55~59</label>
+                </span>
+                        <span class="select_chk v1">
+                    <input type="checkbox" id="item_age_11" class="chk" name="age" value="11">
+                    <label class="lbl " for="item_age_11">60~</label>
+                </span>
+                    </div>
+                    <h3></h3>
+                    <div>
+                        <button class="custom-btn btn-7" type="submit">검색</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    <h3></h3>
+    <hr/>
+    <form action="/index_result" method="post">
+        <div>
+            <input type="hidden" name="url" id="urlInput" value="">
+            <script th:inline="javascript">
+                if (pageUrl()!="http://localhost:8080/index_result"&&pageUrl()!="http://localhost:8080/index_result?url="&&pageUrl()!=[[${url1}]]&&pageUrl()!=[[${url2}]]&&pageUrl()!=[[${url3}]]&&pageUrl()!=[[${url4}]]) {
+                    document.getElementById('urlInput').value = pageUrl();
+                }
+            </script>
+            <p><button class="custom-btn btn-7" type="submit">즐겨찾기 추가</button>동일한 검색조건은 즐겨찾기 추가가 되지않습니다.</p>
+        </div>
+    </form>
+
+    <form action="/index_result" method="post"><div><input class="btn" type="submit" name="removeUrl" value="즐겨찾기 전체 삭제"></div></form>
+
+    <li><a th:href="@{${url1}}">즐겨찾기1</a><p>검색어1: <span th:text="${url1query1}"></span>, 검색어2: <span th:text="${url1query2}"></span>, 검색어3: <span th:text="${url1query3}"></span>, 검색어4: <span th:text="${url1query4}"></span>, 검색어5: <span th:text="${url1query5}"></span>, 검색기간: <span th:text="${url1year}"></span>-<span th:text="${url1month}"></span>-<span th:text="${url1day}"></span>~<span th:text="${url1year2}"></span>-<span th:text="${url1month2}"></span>-<span th:text="${url1day2}"></span></p></li>
+    <li><a th:href="@{${url2}}">즐겨찾기2</a><p>검색어1: <span th:text="${url2query1}"></span>, 검색어2: <span th:text="${url2query2}"></span>, 검색어3: <span th:text="${url2query3}"></span>, 검색어4: <span th:text="${url2query4}"></span>, 검색어5: <span th:text="${url2query5}"></span>, 검색기간: <span th:text="${url2year}"></span>-<span th:text="${url2month}"></span>-<span th:text="${url2day}"></span>~<span th:text="${url2year2}"></span>-<span th:text="${url2month2}"></span>-<span th:text="${url2day2}"></span></p></li>
+    <li><a th:href="@{${url3}}">즐겨찾기3</a><p>검색어1: <span th:text="${url3query1}"></span>, 검색어2: <span th:text="${url3query2}"></span>, 검색어3: <span th:text="${url3query3}"></span>, 검색어4: <span th:text="${url3query4}"></span>, 검색어5: <span th:text="${url3query5}"></span>, 검색기간: <span th:text="${url3year}"></span>-<span th:text="${url3month}"></span>-<span th:text="${url3day}"></span>~<span th:text="${url3year2}"></span>-<span th:text="${url3month2}"></span>-<span th:text="${url3day2}"></span></p></li>
+    <li><a th:href="@{${url4}}">즐겨찾기4</a><p>검색어1: <span th:text="${url4query1}"></span>, 검색어2: <span th:text="${url4query2}"></span>, 검색어3: <span th:text="${url4query3}"></span>, 검색어4: <span th:text="${url4query4}"></span>, 검색어5: <span th:text="${url4query5}"></span>, 검색기간: <span th:text="${url4year}"></span>-<span th:text="${url4month}"></span>-<span th:text="${url4day}"></span>~<span th:text="${url4year2}"></span>-<span th:text="${url4month2}"></span>-<span th:text="${url4day2}"></span></p></li>
+    <li><a th:href="@{${url5}}">즐겨찾기5</a><p>검색어1: <span th:text="${url5query1}"></span>, 검색어2: <span th:text="${url5query2}"></span>, 검색어3: <span th:text="${url5query3}"></span>, 검색어4: <span th:text="${url5query4}"></span>, 검색어5: <span th:text="${url5query5}"></span>, 검색기간: <span th:text="${url5year}"></span>-<span th:text="${url5month}"></span>-<span th:text="${url5day}"></span>~<span th:text="${url5year2}"></span>-<span th:text="${url5month2}"></span>-<span th:text="${url5day2}"></span></p></li>
+    <hr/>
+    <div>
+        <button class="custom-btn btn-7" id="drawLine" value="line">Line Chart</button>
+        <button class="custom-btn btn-7" id="drawBar" value="bar">Bar Chart</button>
+    </div>
+    <div id="chart"></div>
+    <hr/>
+    </div>
+    </body>
+</html>

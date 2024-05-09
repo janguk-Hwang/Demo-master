@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 화면</title>
+    <style>
+        .list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .list table th, .list table td {
+            border: solid 1px #000;
+        }
+        .search-form {
+            position: relative;
+            padding: 5px 0 10px 0;
+            text-align: right;
+        }
+        .search-form .total-count {
+            position: absolute;
+            left: 0; top: 0;
+            float: left;
+        }
+        .pager {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .pager a.on {
+            font-weight: bolder;
+            color: orangered;
+        }
+    </style>
+</head>
+<body>
+<h1>관리자 회원 관리 - 회원 정보 상세</h1>
+
+<div>
+    <a href="/admin/main.do"> 관리자 메인 </a>
+    |
+    <a href="/admin/member/list.do"> 회원 관리 </a>
+    |
+    <a href="#"> 카테고리 관리 </a>
+    |
+    <a href="#"> 강의 관리 </a>
+    |
+    <a href="/member/logout"> 로그아웃 </a>
+    <br/>
+    <hr/>
+</div>
+
+<div class="detail">
+
+</div>
+</body>
+</html>
