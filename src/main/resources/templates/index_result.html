@@ -6,6 +6,11 @@
     <title>메인 페이지</title>
     <link rel="shortcut icon" type="image/x-icon" href="/Logo.png">
     <style>
+        .logout-link {
+        float: right;
+    }
+    </style>
+    <style>
         .item1 { grid-area: header; }
         .item2 { grid-area: menu;}
         .item3 { grid-area: main; }
@@ -276,6 +281,9 @@
 </head>
 
 <body>
+<div>
+    <a href="/member/logout" class="logout-link">로그아웃</a>
+</div>
 <a href="/index_result" target="_blank">
     <img src="/Logo.png" alt="Leto 데이터랩 로고" height="146" width="255">
 </a>
