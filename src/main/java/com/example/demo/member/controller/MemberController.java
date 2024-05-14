@@ -63,223 +63,88 @@ public class MemberController {
         //email_auth.html에서 result의 boolean타입을 활용해 뷰를 출력한다.
     }
 
-    @GetMapping("/index_result")
-    public String search(Model model,
-                         @RequestParam(name = "query1", required = false, defaultValue = "") String query1,
-                         @RequestParam(name = "query2", required = false, defaultValue = "") String query2,
-                         @RequestParam(name = "query3", required = false, defaultValue = "") String query3,
-                         @RequestParam(name = "query4", required = false, defaultValue = "") String query4,
-                         @RequestParam(name = "query5", required = false, defaultValue = "") String query5,
-                         @RequestParam(name = "year", required = false, defaultValue = "") String year,
-                         @RequestParam(name = "month", required = false, defaultValue = "") String month1,
-                         @RequestParam(name = "day", required = false, defaultValue = "") String day1,
-                         @RequestParam(name = "year2", required = false, defaultValue = "") String year2,
-                         @RequestParam(name = "month2", required = false, defaultValue = "") String month2,
-                         @RequestParam(name = "day2", required = false, defaultValue = "") String day2,
-                         @RequestParam(name = "select_day_week_month", required = false, defaultValue = "") String timeunit,
-                         @RequestParam(name = "device", required = false, defaultValue = "") String coverage,
-                         @RequestParam(name = "gender", required = false, defaultValue = "") String gender,
-                         @RequestParam(name = "age", required = false, defaultValue = "") String[] age,
-                         Principal principal) throws JSONException {
-
-        List<String> query1XAxisData = memberService.apiResponseX(query1, year, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-        List<String> query1SeriesData = memberService.apiResponseY(query1, year, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+    @RequestMapping("/member/search_result")
+    public String search_result( Model model,
+                                 @RequestParam(name = "query1", required = false, defaultValue = "") String query1,
+                                 @RequestParam(name = "query2", required = false, defaultValue = "") String query2,
+                                 @RequestParam(name = "query3", required = false, defaultValue = "") String query3,
+                                 @RequestParam(name = "query4", required = false, defaultValue = "") String query4,
+                                 @RequestParam(name = "query5", required = false, defaultValue = "") String query5,
+                                 @RequestParam(name = "year", required = false, defaultValue = "") String year1,
+                                 @RequestParam(name = "month", required = false, defaultValue = "") String month1,
+                                 @RequestParam(name = "day", required = false, defaultValue = "") String day1,
+                                 @RequestParam(name = "year2", required = false, defaultValue = "") String year2,
+                                 @RequestParam(name = "month2", required = false, defaultValue = "") String month2,
+                                 @RequestParam(name = "day2", required = false, defaultValue = "") String day2,
+                                 @RequestParam(name = "select_day_week_month", required = false, defaultValue = "") String timeunit,
+                                 @RequestParam(name = "device", required = false, defaultValue = "") String coverage,
+                                 @RequestParam(name = "gender", required = false, defaultValue = "") String gender,
+                                 @RequestParam(name = "age", required = false, defaultValue = "") String[] age,
+                                 @RequestParam(name = "year3", required = false, defaultValue = "") String year3,
+                                 @RequestParam(name = "month3", required = false, defaultValue = "") String month3,
+                                 @RequestParam(name = "day3", required = false, defaultValue = "") String day3,
+                                 @RequestParam(name = "year4", required = false, defaultValue = "") String year4,
+                                 @RequestParam(name = "month4", required = false, defaultValue = "") String month4,
+                                 @RequestParam(name = "day4", required = false, defaultValue = "") String day4,
+                                 @RequestParam(name = "select_day_week_month2", required = false, defaultValue = "") String timeunit2,
+                                 @RequestParam(name = "device2", required = false, defaultValue = "") String coverage2,
+                                 @RequestParam(name = "gender2", required = false, defaultValue = "") String gender2,
+                                 @RequestParam(name = "age2", required = false, defaultValue = "") String[] age2,
+                                 @RequestParam(name = "addFavorite", required = false, defaultValue = "") String addFavorite) throws JSONException  {
+        List<String> query1XAxisData = memberService.apiResponseX(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+        List<String> query1XAxis2Data = memberService.apiResponseX(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
+        List<String> query1SeriesData = memberService.apiResponseY(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+        List<String> query1Series2Data = memberService.apiResponseY(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
 
         model.addAttribute("xAxisData", query1XAxisData);
+        model.addAttribute("xAxis2Data", query1XAxis2Data);
         model.addAttribute("seriesData1", query1SeriesData);
+        model.addAttribute("series2Data1", query1Series2Data);
         model.addAttribute("query1", query1);
         model.addAttribute("query2", query2);
         model.addAttribute("query3", query3);
         model.addAttribute("query4", query4);
         model.addAttribute("query5", query5);
 
-        String userName = principal.getName();
-
-        String favoriteURL = "";
-
-
-        for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
-            favoriteURL = memberService.getDbFavriteURL(userName).get(i);
-            String[] arr = memberService.extractUrl(favoriteURL);
-            if (i==0){
-                model.addAttribute("url1", favoriteURL);
-                model.addAttribute("url1query1", arr[0]);
-                model.addAttribute("url1query2", arr[1]);
-                model.addAttribute("url1query3", arr[2]);
-                model.addAttribute("url1query4", arr[3]);
-                model.addAttribute("url1query5", arr[4]);
-                model.addAttribute("url1year", arr[5]);
-                model.addAttribute("url1month", arr[6]);
-                model.addAttribute("url1day", arr[7]);
-                model.addAttribute("url1year2", arr[8]);
-                model.addAttribute("url1month2", arr[9]);
-                model.addAttribute("url1day2", arr[10]);
-            } else if (i==1) {
-                model.addAttribute("url2", favoriteURL);
-                model.addAttribute("url2query1", arr[0]);
-                model.addAttribute("url2query2", arr[1]);
-                model.addAttribute("url2query3", arr[2]);
-                model.addAttribute("url2query4", arr[3]);
-                model.addAttribute("url2query5", arr[4]);
-                model.addAttribute("url2year", arr[5]);
-                model.addAttribute("url2month", arr[6]);
-                model.addAttribute("url2day", arr[7]);
-                model.addAttribute("url2year2", arr[8]);
-                model.addAttribute("url21month2", arr[9]);
-                model.addAttribute("url2day2", arr[10]);
-            } else if (i==2) {
-                model.addAttribute("url3", favoriteURL);
-                model.addAttribute("url3query1", arr[0]);
-                model.addAttribute("url3query2", arr[1]);
-                model.addAttribute("url3query3", arr[2]);
-                model.addAttribute("url3query4", arr[3]);
-                model.addAttribute("url3query5", arr[4]);
-                model.addAttribute("url3year", arr[5]);
-                model.addAttribute("url3month", arr[6]);
-                model.addAttribute("url3day", arr[7]);
-                model.addAttribute("url3year2", arr[8]);
-                model.addAttribute("url3month2", arr[9]);
-                model.addAttribute("url3day2", arr[10]);
-            } else if (i==3) {
-                model.addAttribute("url4", favoriteURL);
-                model.addAttribute("url4query1", arr[0]);
-                model.addAttribute("url4query2", arr[1]);
-                model.addAttribute("url4query3", arr[2]);
-                model.addAttribute("url4query4", arr[3]);
-                model.addAttribute("url4query5", arr[4]);
-                model.addAttribute("url4year", arr[5]);
-                model.addAttribute("url4month", arr[6]);
-                model.addAttribute("url4day", arr[7]);
-                model.addAttribute("url4year2", arr[8]);
-                model.addAttribute("url4month2", arr[9]);
-                model.addAttribute("url4day2", arr[10]);
-            } else if (i==4) {
-                model.addAttribute("url5", favoriteURL);
-                model.addAttribute("url5query1", arr[0]);
-                model.addAttribute("url5query2", arr[1]);
-                model.addAttribute("url5query3", arr[2]);
-                model.addAttribute("url5query4", arr[3]);
-                model.addAttribute("url5query5", arr[4]);
-                model.addAttribute("url5year", arr[5]);
-                model.addAttribute("url5month", arr[6]);
-                model.addAttribute("url5day", arr[7]);
-                model.addAttribute("url5year2", arr[8]);
-                model.addAttribute("url5month2", arr[9]);
-                model.addAttribute("url5day2", arr[10]);
-            }
-        }
-
         if (query2!=""){
-            List<String> query2SeriesData = memberService.apiResponseY(query2, year, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query2SeriesData = memberService.apiResponseY(query2, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query2Series2Data = memberService.apiResponseY(query2, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
             model.addAttribute("seriesData2", query2SeriesData);
+            model.addAttribute("series2Data2", query2Series2Data);
         }
 
         if (query3!=""){
-            List<String> query3SeriesData = memberService.apiResponseY(query3, year, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query3SeriesData = memberService.apiResponseY(query3, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query3Series2Data = memberService.apiResponseY(query3, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
             model.addAttribute("seriesData3", query3SeriesData);
+            model.addAttribute("series2Data3", query3Series2Data);
         }
 
         if (query4!=""){
-            List<String> query4SeriesData = memberService.apiResponseY(query4, year, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query4SeriesData = memberService.apiResponseY(query4, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query4Series2Data = memberService.apiResponseY(query4, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
             model.addAttribute("seriesData4", query4SeriesData);
+            model.addAttribute("series2Data4", query4Series2Data);
         }
 
         if (query5!=""){
-            List<String> query5SeriesData = memberService.apiResponseY(query5, year, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query5SeriesData = memberService.apiResponseY(query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query5Series2Data = memberService.apiResponseY(query5, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
             model.addAttribute("seriesData5", query5SeriesData);
+            model.addAttribute("series2Data5", query5Series2Data);
         }
+        return "member/search_result";
+    }
 
+
+    @GetMapping("/index_result")
+    public String search(){
         return "index_result";
     }
 
     @PostMapping("/index_result")
-    public String searchURL(@RequestParam(name = "url", required = false) String url,
-                            @RequestParam(name = "removeUrl", required = false, defaultValue = "") String removeUrl,
-                            Principal principal,Model model) throws JSONException {
-
-        String userName = principal.getName();
-
-        String favoriteURL = "";
-
-        if (url!="") {
-            memberService.setDbFavoritesURL(url, userName);
-        }
-
-        if (removeUrl.equals("즐겨찾기 전체 삭제")){
-            memberService.setRemoveUrl(userName);
-        }
-
-        for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
-            favoriteURL = memberService.getDbFavriteURL(userName).get(i);
-            String[] arr = memberService.extractUrl(favoriteURL);
-            if (i==0){
-                model.addAttribute("url1", favoriteURL);
-                model.addAttribute("url1query1", arr[0]);
-                model.addAttribute("url1query2", arr[1]);
-                model.addAttribute("url1query3", arr[2]);
-                model.addAttribute("url1query4", arr[3]);
-                model.addAttribute("url1query5", arr[4]);
-                model.addAttribute("url1year", arr[5]);
-                model.addAttribute("url1month", arr[6]);
-                model.addAttribute("url1day", arr[7]);
-                model.addAttribute("url1year2", arr[8]);
-                model.addAttribute("url1month2", arr[9]);
-                model.addAttribute("url1day2", arr[10]);
-            } else if (i==1) {
-                model.addAttribute("url2", favoriteURL);
-                model.addAttribute("url2query1", arr[0]);
-                model.addAttribute("url2query2", arr[1]);
-                model.addAttribute("url2query3", arr[2]);
-                model.addAttribute("url2query4", arr[3]);
-                model.addAttribute("url2query5", arr[4]);
-                model.addAttribute("url2year", arr[5]);
-                model.addAttribute("url2month", arr[6]);
-                model.addAttribute("url2day", arr[7]);
-                model.addAttribute("url2year2", arr[8]);
-                model.addAttribute("url2month2", arr[9]);
-                model.addAttribute("url2day2", arr[10]);
-            } else if (i==2) {
-                model.addAttribute("url3", favoriteURL);
-                model.addAttribute("url3query1", arr[0]);
-                model.addAttribute("url3query2", arr[1]);
-                model.addAttribute("url3query3", arr[2]);
-                model.addAttribute("url3query4", arr[3]);
-                model.addAttribute("url3query5", arr[4]);
-                model.addAttribute("url3year", arr[5]);
-                model.addAttribute("url3month", arr[6]);
-                model.addAttribute("url3day", arr[7]);
-                model.addAttribute("url3year2", arr[8]);
-                model.addAttribute("url3month2", arr[9]);
-                model.addAttribute("url3day2", arr[10]);
-            } else if (i==3) {
-                model.addAttribute("url4", favoriteURL);
-                model.addAttribute("url4query1", arr[0]);
-                model.addAttribute("url4query2", arr[1]);
-                model.addAttribute("url4query3", arr[2]);
-                model.addAttribute("url4query4", arr[3]);
-                model.addAttribute("url4query5", arr[4]);
-                model.addAttribute("url4year", arr[5]);
-                model.addAttribute("url4month", arr[6]);
-                model.addAttribute("url4day", arr[7]);
-                model.addAttribute("url4year2", arr[8]);
-                model.addAttribute("url4month2", arr[9]);
-                model.addAttribute("url4day2", arr[10]);
-            } else if (i==4) {
-                model.addAttribute("url5", favoriteURL);
-                model.addAttribute("url5query1", arr[0]);
-                model.addAttribute("url5query2", arr[1]);
-                model.addAttribute("url5query3", arr[2]);
-                model.addAttribute("url5query4", arr[3]);
-                model.addAttribute("url5query5", arr[4]);
-                model.addAttribute("url5year", arr[5]);
-                model.addAttribute("url5month", arr[6]);
-                model.addAttribute("url5day", arr[7]);
-                model.addAttribute("url5year2", arr[8]);
-                model.addAttribute("url5month2", arr[9]);
-                model.addAttribute("url5day2", arr[10]);
-            }
-        }
-
+    public String searchURL(Principal principal,
+                            Model model) throws JSONException {
         return "index_result";
     }
 

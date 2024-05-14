@@ -30,11 +30,6 @@ public class Member {
 
     private String resetPasswordKey;
     private LocalDateTime resetPasswordLimitDt;
-    private String favorites1;
-    private String favorites2;
-    private String favorites3;
-    private String favorites4;
-    private String favorites5;
 
     //관리자 여부를 지정할꺼냐?
     //회원에 따른 ROLE을 지정할거냐??

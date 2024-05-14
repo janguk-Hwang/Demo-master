@@ -6,7 +6,6 @@ import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface MemberService extends UserDetailsService {
@@ -37,8 +36,8 @@ public interface MemberService extends UserDetailsService {
     List<String> apiResponseX(String query, String year, String  month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age);
     List<String> apiResponseY(String query, String year, String  month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age);
 
-    boolean setDbFavoritesURL(String url, String username);
-    ArrayList<String> getDbFavriteURL(String username);
-    String[] extractUrl(String str);
-    boolean setRemoveUrl(String username);
+//    boolean setDbFavoritesURL(String url, String username);
+//    ArrayList<String> getDbFavriteURL(String username);
+//    String[] extractUrl(String str);
+//    boolean setRemoveUrl(String username);
 }

@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>검색 결과 페이지</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/Logo.png">
+    <style>
+        .grid-container {
+            display: flex;
+            align-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+        }
+        .grid-container > div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0px;
+            border-radius: 20px;
+            background-color: #f2f2f2;
+            text-align: justify;
+            padding: 0 10px;
+            font-family: "Lato",sans-serif;
+            font-size: 20px;
+        }
+    </style>
+    <style>
+        #chart1 {
+            width: 90%;
+            height: 350px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #chart2 {
+            width: 90%;
+            height: 350px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+    <style>
+        .card {
+            background: #fff;
+            border-radius: 2px;
+            display: inline-block;
+            height: 300px;
+            position: relative;
+            width: 300px;
+        }
+        .card-4 {
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        }
+    </style>
+    <style>
+        hr.hr-1 {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+        }
+        body {
+            background: #f2f2f2;
+        }
+        p {
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            text-align: center;
+            font-size: 18px;
+            color: #676767;
+        }
+        button {
+            margin: 20px;
+        }
+        .custom-btn {
+            width: 160px;
+            height: 40px;
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px 25px;
+            font-family: '한컴 말랑말랑 Regular', sans-serif;
+            font-size: 16px;
+            font-weight: 900;
+            font-style: normal;
+            text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+            text-decoration: none;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            box-shadow: inset 0px 1px 0px rgba(255,255,255,1),0px 1px 3px rgba(0,0,0,0.3);
+            outline: none;
+            border: 1px solid #ba6;
+        }
+        .custom-btn:active{
+            -webkit-transform: translateY(2px);
+            transform: translateY(2px);
+        }
+        /* 1 */
+        .btn-1{
+            backface-visibility: hidden;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+            background: linear-gradient(180deg,#fea 0%,#dc8 49%,#a95 51%,#dc8 100%);
+            border-radius: 5px;
+        }
+        /* 2 */
+        .btn-2{
+            background: linear-gradient(top, #a95, #f2f2f2 25%, #ffffff 38%, #c5c5c5 63%, #f7f7f7 87%, #a95);
+            background: -webkit-linear-gradient(top, #a95, #fea 25%, #ffffff 38%, #dc8  63%, #fea 87%, #a95);
+        }
+        /* 3 */
+        .btn-3{
+            background: -webkit-gradient(linear, left top, left bottom, from(#a95), to(#fea));
+        }
+        /* 4 */
+        .btn-4{
+            color: #fff;
+            background-image: -webkit-repeating-linear-gradient(left, rgba(255, 238, 170, 0) 0%, rgba(255, 238, 170, 0) 3%, rgba(255, 238, 170, .1) 3.75%),
+            -webkit-repeating-linear-gradient(left, rgba(170, 153, 85, 0) 0%, rgba(170, 153, 85, 0) 2%, rgba(170, 153, 85, .03) 2.25%),
+            -webkit-repeating-linear-gradient(left, rgba(255, 238, 170, 0) 0%, rgba(255, 238, 170, 0) .6%, rgba(255, 238, 170, .15) 1.2%),
+
+            linear-gradient(180deg, #a95 0%,
+                    #fea 47%,
+                    #dc8 53%,
+                    #fea 100%);
+
+        }
+        /* 5 */
+        .btn-5{
+            backface-visibility: hidden;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+            border-color: #7c7c7c;
+            background: linear-gradient(180deg,#e6e6e6 0%,rgba(0, 0, 0, 0.25) 49%, rgba(38, 38, 38, 0.6) 51%,rgba(0, 0, 0, 0.25) 100%);
+            border-radius: 5px;
+        }
+        /* 6 */
+        .btn-6{
+            border-color: #7c7c7c;
+            background: linear-gradient(top, rgba(38, 38, 38, 0.8), #e6e6e6 25%, #ffffff 38%, #c5c5c5 63%, #f7f7f7 87%, rgba(38, 38, 38, 0.8));
+            background: -webkit-linear-gradient(top, rgba(38, 38, 38, 0.5), #e6e6e6 25%, #ffffff 38%, rgba(0, 0, 0, 0.25)  63%, #e6e6e6 87%, rgba(38, 38, 38, 0.4));
+        }
+        /* 7 */
+        .btn-7{
+            border-color: #7c7c7c;
+            background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.25)), to(#e6e6e6));
+        }
+        /* 8 */
+        .btn-8{
+            border-color: #7c7c7c;
+            background-image: -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
+            -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
+            -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
+
+            linear-gradient(180deg, hsl(0,0%,78%)  0%,
+                    hsl(0,0%,90%) 47%,
+                    hsl(0,0%,78%) 53%,
+                    hsl(0,0%,70%)100%);
+        }
+        /* 9 */
+        .btn-9{
+            backface-visibility: hidden;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+            border-color: #D9A3A9;
+            background: linear-gradient(180deg,#FFE6E9 0%,#DDA6AE 49%, #B76E79 51%,#DDA6AE 100%);
+            border-radius: 5px;
+        }
+        /* 10 */
+        .btn-10{
+            border-color: #D9A3A9;
+            background: linear-gradient(top, #DDA6AE, #FFE6E9 25%, #ffffff 38%, #FFE6E9 63%, #f7f7f7 87%, rgba(38, 38, 38, 0.8));
+            background: -webkit-linear-gradient(top,  #DDA6AE, #FFE6E9 25%, #ffefef 38%, #D9A3A9  63%, #FFE6E9 87%, #DDA6AE);
+        }
+        /* 11 */
+        .btn-11{
+            border-color: #D9A3A9;
+            background: -webkit-gradient(linear, left top, left bottom, from(#D9A3A9), to(#FFE6E9));
+        }
+        /* 12 */
+        .btn-12{
+            border-color: #D9A3A9;
+            background-image: -webkit-repeating-linear-gradient(left, rgba(255, 230, 233,0) 0%, rgba(255, 230, 233,0)  3%, rgba(255, 230, 233,.1) 3.75%),
+            -webkit-repeating-linear-gradient(left, rgba(183, 110, 121,0) 0%, rgba(183, 110, 121,0)   2%, rgba(183, 110, 121, .2) 2.25%),
+            -webkit-repeating-linear-gradient(left, rgba(255, 230, 233,0) 0%, rgba(255, 230, 233,0) .6%, rgba(255, 230, 233,.3) 1.1%),
+
+            linear-gradient(180deg, #D9A3A9  0%,
+                    rgba(255, 230, 233,1) 47%,
+                    #D9A3A9 53%,
+                    rgba(255, 230, 233,.7)100%);
+        }
+        /* 13 */
+        .btn-13{
+            backface-visibility: hidden;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+            border-color: #111;
+            color: #555;
+            background: linear-gradient(180deg,#555 0%,#222 49%, #000 51%,#222 100%);
+    </style>
+    <style>
+        body {
+            text-align: center;
+            flex-flow: wrap;
+            font-size: 17px;
+            font-family: 'Titillium Web', sans-serif;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script th:inline="javascript">
+        window.onload = function() {
+            document.getElementById("drawLine").addEventListener('click', function() {
+                drawChart1('line');
+                drawChart2('line');
+            });
+            document.getElementById("drawBar").addEventListener('click', function() {
+                drawChart1('bar');
+                drawChart2('bar');
+            });
+
+            drawChart1('line');
+            drawChart2('line');
+        };
+
+        function drawChart1(type) {
+            var myChart = echarts.init(document.getElementById('chart1'));
+
+            var xAxisData = [[${xAxisData}]];
+            let seriesData1 = [[${seriesData1}]];
+            let seriesData2 = [];
+            let seriesData3 = [];
+            let seriesData4 = [];
+            let seriesData5 = [];
+
+            if ([[${query2}]]!="") {
+                seriesData2 = [[${seriesData2}]];
+            }
+
+            if ([[${query3}]]!="") {
+                seriesData3 = [[${seriesData3}]];
+            }
+
+            if ([[${query4}]]!="") {
+                seriesData4 = [[${seriesData4}]];
+            }
+
+            if ([[${query5}]]!="") {
+                seriesData5 = [[${seriesData5}]];
+            }
+
+            let legendData = []; // 범례 데이터를 동적으로 저장할 배열
+
+            if ([[${query1}]] !== "") {
+                legendData.push('[[${query1}]]');
+            }
+            if ([[${query2}]]!="") {
+                legendData.push('[[${query2}]]');
+            }
+            if ([[${query3}]]!="") {
+                legendData.push('[[${query3}]]');
+            }
+            if ([[${query4}]]!="") {
+                legendData.push('[[${query4}]]');
+            }
+            if ([[${query5}]]!="") {
+                legendData.push('[[${query5}]]');
+            }
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    position: function (point, params, dom, rect, size) {
+                        var x = 150; // x 좌표 조절
+                        var y = 50; // y 좌표 조절
+                        console.log(point[0])
+                        if(point[0]<510){
+                            return [point[0], point[1] - y];
+                        } else if (point[0]>510){
+                            return [point[0]-x, point[1] - y];
+                        }
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: legendData
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '[[${query1}]]',
+                        data: seriesData1,
+                        type: type,
+                        color: 'rgb(255, 0, 0)'
+                    },
+                    {
+                        name: '[[${query2}]]',
+                        data: seriesData2,
+                        type: type,
+                        color: 'rgb(200, 200, 0)'
+                    },
+                    {
+                        name: '[[${query3}]]',
+                        data: seriesData3,
+                        type: type,
+                        color: 'rgb(0, 200, 200)'
+                    },
+                    {
+                        name: '[[${query4}]]',
+                        data: seriesData4,
+                        type: type,
+                        color: 'rgb(0, 100, 235)'
+                    },
+                    {
+                        name: '[[${query5}]]',
+                        data: seriesData5,
+                        type: type,
+                        color: 'rgb(200, 200, 255)'
+                    }
+                ],
+                label: {
+                    show: false,
+                    position: 'top',
+                }
+            };
+            myChart.setOption(option);
+        }
+
+        function drawChart2(type) {
+            var myChart = echarts.init(document.getElementById('chart2'));
+
+            var xAxisData = [[${xAxis2Data}]];
+            let seriesData1 = [[${series2Data1}]];
+            let seriesData2 = [];
+            let seriesData3 = [];
+            let seriesData4 = [];
+            let seriesData5 = [];
+
+            if ([[${query2}]]!="") {
+                seriesData2 = [[${series2Data2}]];
+            }
+
+            if ([[${query3}]]!="") {
+                seriesData3 = [[${series2Data3}]];
+            }
+
+            if ([[${query4}]]!="") {
+                seriesData4 = [[${series2Data4}]];
+            }
+
+            if ([[${query5}]]!="") {
+                seriesData5 = [[${series2Data5}]];
+            }
+
+            let legendData = []; // 범례 데이터를 동적으로 저장할 배열
+
+            if ([[${query1}]] !== "") {
+                legendData.push('[[${query1}]]');
+            }
+            if ([[${query2}]]!="") {
+                legendData.push('[[${query2}]]');
+            }
+            if ([[${query3}]]!="") {
+                legendData.push('[[${query3}]]');
+            }
+            if ([[${query4}]]!="") {
+                legendData.push('[[${query4}]]');
+            }
+            if ([[${query5}]]!="") {
+                legendData.push('[[${query5}]]');
+            }
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    position: function (point, params, dom, rect, size) {
+                        var x = 150; // x 좌표 조절
+                        var y = 50; // y 좌표 조절
+                        console.log(point[0])
+                        if(point[0]<510){
+                            return [point[0], point[1] - y];
+                        } else if (point[0]>510){
+                            return [point[0]-x, point[1] - y];
+                        }
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: legendData
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '[[${query1}]]',
+                        data: seriesData1,
+                        type: type,
+                        color: 'rgb(255, 0, 0)'
+                    },
+                    {
+                        name: '[[${query2}]]',
+                        data: seriesData2,
+                        type: type,
+                        color: 'rgb(200, 200, 0)'
+                    },
+                    {
+                        name: '[[${query3}]]',
+                        data: seriesData3,
+                        type: type,
+                        color: 'rgb(0, 200, 200)'
+                    },
+                    {
+                        name: '[[${query4}]]',
+                        data: seriesData4,
+                        type: type,
+                        color: 'rgb(0, 100, 235)'
+                    },
+                    {
+                        name: '[[${query5}]]',
+                        data: seriesData5,
+                        type: type,
+                        color: 'rgb(200, 200, 255)'
+                    }
+                ],
+                label: {
+                    show: false,
+                    position: 'top',
+                }
+            };
+            myChart.setOption(option);
+        }
+    </script>
+</head>
+<body>
+<a href="/index_result" target="_blank">
+    <img src="/Logo.png" alt="Leto 데이터랩 로고" height="146" width="255">
+</a>
+<div class="grid-container">
+    <div>
+        <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
+        <button class="custom-btn btn-7" id="drawLine" value="line">Line Chart</button>
+        <button class="custom-btn btn-7" id="drawBar" value="bar">Bar Chart</button>
+        <button class="custom-btn btn-7" onclick="window.location.href='/index_result'">검색화면으로</button>
+        <form method="post"><button class="custom-btn btn-7" type="submit" name="addFavorite" value="1">즐겨찾기 추가</button></form>
+    </div>
+</div>
+<div class="card card-4" id="chart1"></div>
+<h1></h1>
+<div class="card card-4" id="chart2"></div>
+</body>
+</html>
