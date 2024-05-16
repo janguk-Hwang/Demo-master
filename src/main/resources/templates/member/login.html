@@ -71,9 +71,9 @@
             box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
         }
         .overlay_btn {
-            background-color: #ff4b2b;
+            background-color: rgba(255,255,255,.2);
             color: #fff;
-            box-shadow: -5px -5px 10px #ff6b3f, 5px 5px 8px #bf4b2b;
+            <!-- box-shadow: -5px -5px 10px rgba(255,255,255,.2), 5px 5px 8px rgba(255,255,255,.2); -->
         }
         .sign-in-container {
             position: absolute;
@@ -101,7 +101,7 @@
             width: 50%;
             height: 100%;
             opacity: 0;
-            background-color: #ff4b2b;
+            background-color: #8392a5;
             color: #fff;
             transition: all 0.5s;
         }
@@ -115,7 +115,7 @@
             right: 0;
             width: 50%;
             height: 100%;
-            background-color: #ff4b2b;
+            background-color: #8392a5;
             color: #fff;
             transition: all 0.5s;
         }
@@ -178,36 +178,30 @@
     </style>
 </head>
 <body>
-<div th:text="${errorMessage}"></div>
-<div class="wrapper">
-    <div class="container">
-        <div class="sign-in-container">
-            <form method="post">
-                <h1>Sign In</h1>
-                <div>
-                    <input type="text" name="username" placeholder="아이디(이메일)을 입력" required>
-                </div>
-                <div>
-                    <input type="password" name="password" placeholder="비밀번호 입력" required>
-                </div>
-                <button type="submit" class="form_btn">로그인</button>
-                <button id="forgotpwd" class="form_btn" onclick="window.location.href='/member/find/password'">비밀번호 찾기</button>
-            </form>
-        </div>
-        <div class="overlay-container">
-            <div class="overlay-left">
-                <h1>Welcome Back</h1>
-                <p>To keep connected with us please login with your personal info</p>
-                <button id="signIn" class="overlay_btn">로그인</button>
+    <div th:text="${errorMessage}"></div>
+    <div class="wrapper">
+        <div class="container">
+            <div class="sign-in-container">
+                <form method="post">
+                    <h1>로그인</h1>
+                    <div>
+                        <input type="text" name="username" placeholder="아이디, 이메일" required>
+                    </div>
+                    <div>
+                        <input type="password" name="password" placeholder="비밀번호" required>
+                    </div>
+                    <button type="submit" class="form_btn">로그인</button>
+                    <button id="forgotpwd" class="form_btn" onclick="window.location.href='/member/find/password'">비밀번호 찾기</button>
+                </form>
             </div>
-            <div class="overlay-right">
-                <h1>Hello, Friend</h1>
-                <p>Enter your personal details and start journey with us</p>
-                <button id="sign_up" class="overlay_btn" onclick="window.location.href='/member/register'">회원가입</button>
+            <div class="overlay-container">
+                <div class="overlay-right">
+                    <h1>LETO Trends</h1>
+                    <p>지금 대한민국에서 무엇을 검색하고 있는지 알아보세요.</p>
+                    <button id="sign_up" class="overlay_btn" onclick="window.location.href='/member/register'">회원가입</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 </body>
 </html>

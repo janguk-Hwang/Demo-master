@@ -70,9 +70,9 @@
             box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
         }
         .overlay_btn {
-            background-color: #ff4b2b;
+            background-color: rgba(255,255,255,.2);
             color: #fff;
-            box-shadow: -5px -5px 10px #ff6b3f, 5px 5px 8px #bf4b2b;
+        <!-- box-shadow: -5px -5px 10px rgba(255,255,255,.2), 5px 5px 8px rgba(255,255,255,.2); -->
         }
         .sign-in-container {
             position: absolute;
@@ -100,7 +100,7 @@
             width: 50%;
             height: 100%;
             opacity: 0;
-            background-color: #ff4b2b;
+            background-color: #8392a5;
             color: #fff;
             transition: all 0.5s;
         }
@@ -114,7 +114,7 @@
             right: 0;
             width: 50%;
             height: 100%;
-            background-color: #ff4b2b;
+            background-color: #8392a5;
             color: #fff;
             transition: all 0.5s;
         }
@@ -184,19 +184,19 @@
             <form method="post">
                 <h1>회원 가입</h1>
                 <div>
-                    <input type="email" name="userId" placeholder="아이디(이메일)을 입력" required>
+                    <input type="email" name="userId" placeholder="아이디, 이메일" required>
                 </div>
                 <div>
-                    <input type="text" name="userName" placeholder="이름 입력" required>
+                    <input type="text" name="userName" placeholder="이름" required>
                 </div>
                 <div>
-                    <input type="password" name="password" placeholder="비밀번호 입력" required>
+                    <input type="password" name="password" placeholder="비밀번호" required>
                 </div>
                 <div>
-                    <input type="password" name="repassword" placeholder="비밀번호 입력 확인" required>
+                    <input type="password" name="repassword" placeholder="비밀번호 확인" required>
                 </div>
                 <div>
-                    <input type="tel" name="phone" placeholder="전화번호 입력" required>
+                    <input type="tel" name="phone" placeholder="전화번호" required>
                 </div>
                 <div>
                     <button type="submit" class="form_btn">회원 가입</button>
@@ -213,8 +213,8 @@
                 <button id="signIn" class="overlay_btn">SIGN IN</button>
             </div>
             <div class="overlay-right">
-                <h1>Leto 데이터 분석</h1>
-                <p>Leto 데이터 분석에서 특정 검색어가 얼마나 많이 검색되었는지 확인해보세요</p>
+                <h1>LETO Trends</h1>
+                <p>지금 대한민국에서 무엇을 검색하고 있는지 알아보세요.</p>
             </div>
         </div>
     </div>
