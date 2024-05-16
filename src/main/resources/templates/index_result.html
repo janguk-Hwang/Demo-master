@@ -6,6 +6,8 @@
     <title>메인 페이지</title>
     <link rel="shortcut icon" type="image/x-icon" href="/Logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://ssl.pstatic.net/static.datalab/202405030736/css/datalab.css">
+    <link rel="stylesheet" type="text/css" href="https://ssl.pstatic.net/static.datalab/202405030736/css/graph.css">
     <style>
         :root {
             --background: #9c88ff;
@@ -422,7 +424,7 @@
             margin: 20px;
         }
         .custom-btn {
-            width: 160px;
+            width: 200px;
             height: 40px;
             color: #fff;
             border-radius: 10px;
@@ -490,8 +492,9 @@
         }
     </style>
     <script>
-        function redirectToPage(url) {
-            window.location.href = url;
+        function logout() {
+            alert('로그아웃되었습니다.');
+            window.location.href = '/member/logout';
         }
     </script>
 </head>
@@ -507,13 +510,13 @@
 </a>
 <form action="member/search_result" method="post">
     <div id="nav-bar">
-        <input id="nav-toggle" type="checkbox" checked/>
+        <input id="nav-toggle" type="checkbox"/>
         <div id="nav-header"><a id="nav-title" href="/index_result" target="_blank"><i class="fab fa-codepen"></i>LETO Trends</a>
             <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
             <hr/>
         </div>
         <div id="nav-content">
-            <div class="nav-button" onclick="redirectToPage('/member/logout')">
+            <div class="nav-button" onclick="logout()">
                 <i class="fas fas fa-palette"></i><span>logout</span>
             </div>
             <div class="nav-button"><i class="fas fa-images"></i><span>Assets</span></div>
@@ -541,18 +544,20 @@
     </div>
     <div class="grid-container">
         <div class="item1">
-            <a>&nbsp</a>
-            <input type="text" name="query1" required/>
+            <h4>LETO Trends에서 특정 검색어가 얼마나 많이 검색되었는지 확인해보세요. 검색어를 기간별/연령별/성별로 조회할 수 있습니다.</h4>
+            <br>
+            <input type="text" placeholder="검색어1(필수)" name="query1" required/>
 
-            <input type="text" name="query2"/>
+            <input type="text" placeholder="검색어2" name="query2"/>
 
-            <input type="text" name="query3"/>
+            <input type="text" placeholder="검색어3" name="query3"/>
 
-            <input type="text" name="query4"/>
+            <input type="text" placeholder="검색어4" name="query4"/>
 
-            <input type="text" name="query5"/>
+            <input type="text" placeholder="검색어5" name="query5"/>
         </div>
         <div class="item2">
+            <br>
             <strong>비교군1 : </strong>
             <strong class="title">기간</strong>
             <label for="selectYear1"></label><select name="year" id="selectYear1">
@@ -698,47 +703,47 @@
                     <strong class="title v2">연령선택</strong>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_all" class="chk" name="age" value="">
-                        <label class="lbl " for="item_age_all">전체</label>
+                        <label class="lbl " for="item_age_all">전체&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_1" class="chk" name="age" value="1">
-                        <label class="lbl " for="item_age_1">~12</label>
+                        <label class="lbl " for="item_age_1">~12&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_2" class="chk" name="age" value="2">
-                        <label class="lbl " for="item_age_2">13~18</label>
+                        <label class="lbl " for="item_age_2">13~18&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_3" class="chk" name="age" value="3">
-                        <label class="lbl " for="item_age_3">19~24</label>
+                        <label class="lbl " for="item_age_3">19~24&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_4" class="chk" name="age" value="4">
-                        <label class="lbl " for="item_age_4">25~29</label>
+                        <label class="lbl " for="item_age_4">25~29&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_5" class="chk" name="age" value="5">
-                        <label class="lbl " for="item_age_5">30~34</label>
+                        <label class="lbl " for="item_age_5">30~34&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_6" class="chk" name="age" value="6">
-                        <label class="lbl " for="item_age_6">35~39</label>
+                        <label class="lbl " for="item_age_6">35~39&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_7" class="chk" name="age" value="7">
-                        <label class="lbl " for="item_age_7">40~44</label>
+                        <label class="lbl " for="item_age_7">40~44&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_8" class="chk" name="age" value="8">
-                        <label class="lbl " for="item_age_8">45~49</label>
+                        <label class="lbl " for="item_age_8">45~49&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_9" class="chk" name="age" value="9">
-                        <label class="lbl " for="item_age_9">50~54</label>
+                        <label class="lbl " for="item_age_9">50~54&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_10" class="chk" name="age" value="10">
-                        <label class="lbl " for="item_age_10">55~59</label>
+                        <label class="lbl " for="item_age_10">55~59&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age_11" class="chk" name="age" value="11">
@@ -896,47 +901,47 @@
                     <strong class="title v2">연령선택</strong>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_all" class="chk" name="age2" value="">
-                        <label class="lbl " for="item_age_all">전체</label>
+                        <label class="lbl " for="item_age_all">전체&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_1" class="chk" name="age2" value="1">
-                        <label class="lbl " for="item_age_1">~12</label>
+                        <label class="lbl " for="item_age_1">~12&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_2" class="chk" name="age2" value="2">
-                        <label class="lbl " for="item_age_2">13~18</label>
+                        <label class="lbl " for="item_age_2">13~18&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_3" class="chk" name="age2" value="3">
-                        <label class="lbl " for="item_age_3">19~24</label>
+                        <label class="lbl " for="item_age_3">19~24&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_4" class="chk" name="age2" value="4">
-                        <label class="lbl " for="item_age_4">25~29</label>
+                        <label class="lbl " for="item_age_4">25~29&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_5" class="chk" name="age2" value="5">
-                        <label class="lbl " for="item_age_5">30~34</label>
+                        <label class="lbl " for="item_age_5">30~34&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_6" class="chk" name="age2" value="6">
-                        <label class="lbl " for="item_age_6">35~39</label>
+                        <label class="lbl " for="item_age_6">35~39&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_7" class="chk" name="age2" value="7">
-                        <label class="lbl " for="item_age_7">40~44</label>
+                        <label class="lbl " for="item_age_7">40~44&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_8" class="chk" name="age2" value="8">
-                        <label class="lbl " for="item_age_8">45~49</label>
+                        <label class="lbl " for="item_age_8">45~49&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_9" class="chk" name="age2" value="9">
-                        <label class="lbl " for="item_age_9">50~54</label>
+                        <label class="lbl " for="item_age_9">50~54&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_10" class="chk" name="age2" value="10">
-                        <label class="lbl " for="item_age_10">55~59</label>
+                        <label class="lbl " for="item_age_10">55~59&nbsp</label>
                     </span>
                     <span class="select_chk v1">
                         <input type="checkbox" id="item_age2_11" class="chk" name="age2" value="11">
@@ -946,7 +951,7 @@
             </div>
         </div>
     </div>
-    <button class="custom-btn btn-7 item4" type="submit">검색</button>
+    <button class="custom-btn btn-7 item4" type="submit">LETO 검색 데이터 조회</button>
 </form>
 </body>
 </html>
