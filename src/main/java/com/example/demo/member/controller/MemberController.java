@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -63,7 +64,7 @@ public class MemberController {
         //email_auth.html에서 result의 boolean타입을 활용해 뷰를 출력한다.
     }
 
-    @RequestMapping("/member/search_result")
+    @GetMapping("/member/search_result")
     public String search_result( Model model,
                                  @RequestParam(name = "query1", required = false, defaultValue = "") String query1,
                                  @RequestParam(name = "query2", required = false, defaultValue = "") String query2,
@@ -90,7 +91,7 @@ public class MemberController {
                                  @RequestParam(name = "device2", required = false, defaultValue = "") String coverage2,
                                  @RequestParam(name = "gender2", required = false, defaultValue = "") String gender2,
                                  @RequestParam(name = "age2", required = false, defaultValue = "") String[] age2,
-                                 @RequestParam(name = "addFavorite", required = false, defaultValue = "") String addFavorite) throws JSONException  {
+                                 Principal principal) throws JSONException  {
         List<String> query1XAxisData = memberService.apiResponseX(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
         List<String> query1XAxis2Data = memberService.apiResponseX(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
         List<String> query1SeriesData = memberService.apiResponseY(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
@@ -106,28 +107,47 @@ public class MemberController {
         model.addAttribute("query4", query4);
         model.addAttribute("query5", query5);
 
-        if (query2!=""){
+        String userName = principal.getName();
+
+        String favoriteURL = "";
+
+        for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
+            favoriteURL = memberService.getDbFavriteURL(userName).get(i);
+            if (i==0){
+                model.addAttribute("url1", favoriteURL);
+            } else if (i==1) {
+                model.addAttribute("url2", favoriteURL);
+            } else if (i==2) {
+                model.addAttribute("url3", favoriteURL);
+            } else if (i==3) {
+                model.addAttribute("url4", favoriteURL);
+            } else if (i==4) {
+                model.addAttribute("url5", favoriteURL);
+            }
+        }
+
+        if (!query2.equals("")){
             List<String> query2SeriesData = memberService.apiResponseY(query2, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
             List<String> query2Series2Data = memberService.apiResponseY(query2, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
             model.addAttribute("seriesData2", query2SeriesData);
             model.addAttribute("series2Data2", query2Series2Data);
         }
 
-        if (query3!=""){
+        if (!query3.equals("")){
             List<String> query3SeriesData = memberService.apiResponseY(query3, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
             List<String> query3Series2Data = memberService.apiResponseY(query3, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
             model.addAttribute("seriesData3", query3SeriesData);
             model.addAttribute("series2Data3", query3Series2Data);
         }
 
-        if (query4!=""){
+        if (!query4.equals("")){
             List<String> query4SeriesData = memberService.apiResponseY(query4, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
             List<String> query4Series2Data = memberService.apiResponseY(query4, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
             model.addAttribute("seriesData4", query4SeriesData);
             model.addAttribute("series2Data4", query4Series2Data);
         }
 
-        if (query5!=""){
+        if (!query5.equals("")){
             List<String> query5SeriesData = memberService.apiResponseY(query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
             List<String> query5Series2Data = memberService.apiResponseY(query5, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
             model.addAttribute("seriesData5", query5SeriesData);
@@ -136,17 +156,396 @@ public class MemberController {
         return "member/search_result";
     }
 
+    @PostMapping("/member/search_result")
+    public String search_result( @RequestParam(name = "url", required = false, defaultValue = "") String url,
+                                 Principal principal) throws JSONException {
+        String userName = principal.getName();
+
+        if (!url.equals("")){
+            memberService.setDbFavoriteURL(url,userName);
+        }
+
+        return "member/search_result";
+    }
 
     @GetMapping("/index_result")
-    public String search(){
+    public String search(Principal principal,
+                         Model model){
+        String userName = principal.getName();
+
+        String favoriteURL = "";
+        boolean isTrue1 = true;
+        boolean isTrue2 = true;
+        boolean isTrue3 = true;
+        boolean isTrue4 = true;
+        boolean isTrue5 = true;
+        boolean isTrueAll = false;
+
+        for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
+            favoriteURL = memberService.getDbFavriteURL(userName).get(i);
+            ArrayList<String> arrayList = memberService.extractUrl(favoriteURL);
+
+            if (i == 0&&favoriteURL!="") {
+                model.addAttribute("url1", favoriteURL);
+                model.addAttribute("url1query1", arrayList.get(0));
+                model.addAttribute("url1query2", arrayList.get(1));
+                model.addAttribute("url1query3", arrayList.get(2));
+                model.addAttribute("url1query4", arrayList.get(3));
+                model.addAttribute("url1query5", arrayList.get(4));
+                model.addAttribute("url1year1", arrayList.get(5));
+                model.addAttribute("url1month1", arrayList.get(6));
+                model.addAttribute("url1day1", arrayList.get(7));
+                model.addAttribute("url1year2", arrayList.get(8));
+                model.addAttribute("url1month2", arrayList.get(9));
+                model.addAttribute("url1day2", arrayList.get(10));
+                model.addAttribute("url1select_day_week_month", arrayList.get(11));
+                model.addAttribute("url1device", arrayList.get(12));
+                model.addAttribute("url1gender", arrayList.get(13));
+                model.addAttribute("url1year3", arrayList.get(14));
+                model.addAttribute("url1month3", arrayList.get(15));
+                model.addAttribute("url1day3", arrayList.get(16));
+                model.addAttribute("url1year4", arrayList.get(17));
+                model.addAttribute("url1month4", arrayList.get(18));
+                model.addAttribute("url1day4", arrayList.get(19));
+                model.addAttribute("url1select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url1device2", arrayList.get(21));
+                model.addAttribute("url1gender2", arrayList.get(22));
+                model.addAttribute("isTrue1", isTrue1);
+            } else if (i==0&&favoriteURL==""){
+                isTrue1 = false;
+                model.addAttribute("isTrue1", isTrue1);
+            }
+            if (i == 1&&favoriteURL!="") {
+                model.addAttribute("url2", favoriteURL);
+                model.addAttribute("url2query1", arrayList.get(0));
+                model.addAttribute("url2query2", arrayList.get(1));
+                model.addAttribute("url2query3", arrayList.get(2));
+                model.addAttribute("url2query4", arrayList.get(3));
+                model.addAttribute("url2query5", arrayList.get(4));
+                model.addAttribute("url2year1", arrayList.get(5));
+                model.addAttribute("url2month1", arrayList.get(6));
+                model.addAttribute("url2day1", arrayList.get(7));
+                model.addAttribute("url2year2", arrayList.get(8));
+                model.addAttribute("url2month2", arrayList.get(9));
+                model.addAttribute("url2day2", arrayList.get(10));
+                model.addAttribute("url2select_day_week_month", arrayList.get(11));
+                model.addAttribute("url2device", arrayList.get(12));
+                model.addAttribute("url2gender", arrayList.get(13));
+                model.addAttribute("url2year3", arrayList.get(14));
+                model.addAttribute("url2month3", arrayList.get(15));
+                model.addAttribute("url2day3", arrayList.get(16));
+                model.addAttribute("url2year4", arrayList.get(17));
+                model.addAttribute("url2month4", arrayList.get(18));
+                model.addAttribute("url2day4", arrayList.get(19));
+                model.addAttribute("url2select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url2device2", arrayList.get(21));
+                model.addAttribute("url2gender2", arrayList.get(22));
+                model.addAttribute("isTrue2", isTrue2);
+            } else if (i==1&&favoriteURL==""){
+                isTrue2 = false;
+                model.addAttribute("isTrue2", isTrue2);
+            }
+            if (i == 2&&favoriteURL!="") {
+                model.addAttribute("url3", favoriteURL);
+                model.addAttribute("url3query1", arrayList.get(0));
+                model.addAttribute("url3query2", arrayList.get(1));
+                model.addAttribute("url3query3", arrayList.get(2));
+                model.addAttribute("url3query4", arrayList.get(3));
+                model.addAttribute("url3query5", arrayList.get(4));
+                model.addAttribute("url3year1", arrayList.get(5));
+                model.addAttribute("url3month1", arrayList.get(6));
+                model.addAttribute("url3day1", arrayList.get(7));
+                model.addAttribute("url3year2", arrayList.get(8));
+                model.addAttribute("url3month2", arrayList.get(9));
+                model.addAttribute("url3day2", arrayList.get(10));
+                model.addAttribute("url3select_day_week_month", arrayList.get(11));
+                model.addAttribute("url3device", arrayList.get(12));
+                model.addAttribute("url3gender", arrayList.get(13));
+                model.addAttribute("url3year3", arrayList.get(14));
+                model.addAttribute("url3month3", arrayList.get(15));
+                model.addAttribute("url3day3", arrayList.get(16));
+                model.addAttribute("url3year4", arrayList.get(17));
+                model.addAttribute("url3month4", arrayList.get(18));
+                model.addAttribute("url3day4", arrayList.get(19));
+                model.addAttribute("url3select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url3device2", arrayList.get(21));
+                model.addAttribute("url3gender2", arrayList.get(22));
+                model.addAttribute("isTrue3", isTrue3);
+            } else if (i==2&&favoriteURL==""){
+                isTrue3 = false;
+                model.addAttribute("isTrue3", isTrue3);
+            }
+            if (i == 3&&favoriteURL!="") {
+                model.addAttribute("url4", favoriteURL);
+                model.addAttribute("url4query1", arrayList.get(0));
+                model.addAttribute("url4query2", arrayList.get(1));
+                model.addAttribute("url4query3", arrayList.get(2));
+                model.addAttribute("url4query4", arrayList.get(3));
+                model.addAttribute("url4query5", arrayList.get(4));
+                model.addAttribute("url4year1", arrayList.get(5));
+                model.addAttribute("url4month1", arrayList.get(6));
+                model.addAttribute("url4day1", arrayList.get(7));
+                model.addAttribute("url4year2", arrayList.get(8));
+                model.addAttribute("url4month2", arrayList.get(9));
+                model.addAttribute("url4day2", arrayList.get(10));
+                model.addAttribute("url4select_day_week_month", arrayList.get(11));
+                model.addAttribute("url4device", arrayList.get(12));
+                model.addAttribute("url4gender", arrayList.get(13));
+                model.addAttribute("url4year3", arrayList.get(14));
+                model.addAttribute("url4month3", arrayList.get(15));
+                model.addAttribute("url4day3", arrayList.get(16));
+                model.addAttribute("url4year4", arrayList.get(17));
+                model.addAttribute("url4month4", arrayList.get(18));
+                model.addAttribute("url4day4", arrayList.get(19));
+                model.addAttribute("url4select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url4device2", arrayList.get(21));
+                model.addAttribute("url4gender2", arrayList.get(22));
+                model.addAttribute("isTrue4", isTrue4);
+            } else if (i==3&&favoriteURL==""){
+                isTrue4 = false;
+                model.addAttribute("isTrue4", isTrue4);
+            }
+            if (i == 4&&favoriteURL!="") {
+                model.addAttribute("url5", favoriteURL);
+                model.addAttribute("url5query1", arrayList.get(0));
+                model.addAttribute("url5query2", arrayList.get(1));
+                model.addAttribute("url5query3", arrayList.get(2));
+                model.addAttribute("url5query4", arrayList.get(3));
+                model.addAttribute("url5query5", arrayList.get(4));
+                model.addAttribute("url5year1", arrayList.get(5));
+                model.addAttribute("url5month1", arrayList.get(6));
+                model.addAttribute("url5day1", arrayList.get(7));
+                model.addAttribute("url5year2", arrayList.get(8));
+                model.addAttribute("url5month2", arrayList.get(9));
+                model.addAttribute("url5day2", arrayList.get(10));
+                model.addAttribute("url5select_day_week_month", arrayList.get(11));
+                model.addAttribute("url5device", arrayList.get(12));
+                model.addAttribute("url5gender", arrayList.get(13));
+                model.addAttribute("url5year3", arrayList.get(14));
+                model.addAttribute("url5month3", arrayList.get(15));
+                model.addAttribute("url5day3", arrayList.get(16));
+                model.addAttribute("url5year4", arrayList.get(17));
+                model.addAttribute("url5month4", arrayList.get(18));
+                model.addAttribute("url5day4", arrayList.get(19));
+                model.addAttribute("url5select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url5device2", arrayList.get(21));
+                model.addAttribute("url5gender2", arrayList.get(22));
+                model.addAttribute("isTrue5", isTrue5);
+            } else if (i==4&&favoriteURL==""){
+                isTrue5 = false;
+                model.addAttribute("isTrue5", isTrue5);
+            }
+        }
+        if (isTrue1==true || isTrue2==true || isTrue3==true || isTrue4==true || isTrue5==true){
+            isTrueAll=true;
+            model.addAttribute("isTrueAll", isTrueAll);
+        }
+
         return "index_result";
     }
 
     @PostMapping("/index_result")
-    public String searchURL(Principal principal,
-                            Model model) throws JSONException {
+    public String search(Principal principal,
+                         Model model,
+                         @RequestParam(name = "removeAllUrl", required = false, defaultValue = "") String removeAllUrl,
+                         @RequestParam(name = "removeUrl1", required = false, defaultValue = "") String removeUrl1,
+                         @RequestParam(name = "removeUrl2", required = false, defaultValue = "") String removeUrl2,
+                         @RequestParam(name = "removeUrl3", required = false, defaultValue = "") String removeUrl3,
+                         @RequestParam(name = "removeUrl4", required = false, defaultValue = "") String removeUrl4,
+                         @RequestParam(name = "removeUrl5", required = false, defaultValue = "") String removeUrl5) {
+        String userName = principal.getName();
+
+        if (removeAllUrl.equals("즐겨찾기 전체 삭제")){
+            memberService.setRemoveAllUrl(userName);
+        }
+        if (removeUrl1.equals("1")) {
+            memberService.setRemoveUrl1(userName);
+        }
+        if (removeUrl2.equals("2")) {
+            memberService.setRemoveUrl2(userName);
+        }
+        if (removeUrl3.equals("3")) {
+            memberService.setRemoveUrl3(userName);
+        }
+        if (removeUrl4.equals("4")) {
+            memberService.setRemoveUrl4(userName);
+        }
+        if (removeUrl5.equals("5")) {
+            memberService.setRemoveUrl5(userName);
+        }
+
+        String favoriteURL = "";
+        boolean isTrue1 = true;
+        boolean isTrue2 = true;
+        boolean isTrue3 = true;
+        boolean isTrue4 = true;
+        boolean isTrue5 = true;
+        boolean isTrueAll = true;
+
+        for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
+            favoriteURL = memberService.getDbFavriteURL(userName).get(i);
+            ArrayList<String> arrayList = memberService.extractUrl(favoriteURL);
+
+            if (i == 0&&favoriteURL!="") {
+                model.addAttribute("url1", favoriteURL);
+                model.addAttribute("url1query1", arrayList.get(0));
+                model.addAttribute("url1query2", arrayList.get(1));
+                model.addAttribute("url1query3", arrayList.get(2));
+                model.addAttribute("url1query4", arrayList.get(3));
+                model.addAttribute("url1query5", arrayList.get(4));
+                model.addAttribute("url1year1", arrayList.get(5));
+                model.addAttribute("url1month1", arrayList.get(6));
+                model.addAttribute("url1day1", arrayList.get(7));
+                model.addAttribute("url1year2", arrayList.get(8));
+                model.addAttribute("url1month2", arrayList.get(9));
+                model.addAttribute("url1day2", arrayList.get(10));
+                model.addAttribute("url1select_day_week_month", arrayList.get(11));
+                model.addAttribute("url1device", arrayList.get(12));
+                model.addAttribute("url1gender", arrayList.get(13));
+                model.addAttribute("url1year3", arrayList.get(14));
+                model.addAttribute("url1month3", arrayList.get(15));
+                model.addAttribute("url1day3", arrayList.get(16));
+                model.addAttribute("url1year4", arrayList.get(17));
+                model.addAttribute("url1month4", arrayList.get(18));
+                model.addAttribute("url1day4", arrayList.get(19));
+                model.addAttribute("url1select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url1device2", arrayList.get(21));
+                model.addAttribute("url1gender2", arrayList.get(22));
+                model.addAttribute("isTrue1", isTrue1);
+            } else if (i==0&&favoriteURL==""){
+                isTrue1 = false;
+                model.addAttribute("isTrue1", isTrue1);
+            }
+            if (i == 1&&favoriteURL!="") {
+                model.addAttribute("url2", favoriteURL);
+                model.addAttribute("url2query1", arrayList.get(0));
+                model.addAttribute("url2query2", arrayList.get(1));
+                model.addAttribute("url2query3", arrayList.get(2));
+                model.addAttribute("url2query4", arrayList.get(3));
+                model.addAttribute("url2query5", arrayList.get(4));
+                model.addAttribute("url2year1", arrayList.get(5));
+                model.addAttribute("url2month1", arrayList.get(6));
+                model.addAttribute("url2day1", arrayList.get(7));
+                model.addAttribute("url2year2", arrayList.get(8));
+                model.addAttribute("url2month2", arrayList.get(9));
+                model.addAttribute("url2day2", arrayList.get(10));
+                model.addAttribute("url2select_day_week_month", arrayList.get(11));
+                model.addAttribute("url2device", arrayList.get(12));
+                model.addAttribute("url2gender", arrayList.get(13));
+                model.addAttribute("url2year3", arrayList.get(14));
+                model.addAttribute("url2month3", arrayList.get(15));
+                model.addAttribute("url2day3", arrayList.get(16));
+                model.addAttribute("url2year4", arrayList.get(17));
+                model.addAttribute("url2month4", arrayList.get(18));
+                model.addAttribute("url2day4", arrayList.get(19));
+                model.addAttribute("url2select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url2device2", arrayList.get(21));
+                model.addAttribute("url2gender2", arrayList.get(22));
+                model.addAttribute("isTrue2", isTrue2);
+            } else if (i==1&&favoriteURL==""){
+                isTrue2 = false;
+                model.addAttribute("isTrue2", isTrue2);
+            }
+            if (i == 2&&favoriteURL!="") {
+                model.addAttribute("url3", favoriteURL);
+                model.addAttribute("url3query1", arrayList.get(0));
+                model.addAttribute("url3query2", arrayList.get(1));
+                model.addAttribute("url3query3", arrayList.get(2));
+                model.addAttribute("url3query4", arrayList.get(3));
+                model.addAttribute("url3query5", arrayList.get(4));
+                model.addAttribute("url3year1", arrayList.get(5));
+                model.addAttribute("url3month1", arrayList.get(6));
+                model.addAttribute("url3day1", arrayList.get(7));
+                model.addAttribute("url3year2", arrayList.get(8));
+                model.addAttribute("url3month2", arrayList.get(9));
+                model.addAttribute("url3day2", arrayList.get(10));
+                model.addAttribute("url3select_day_week_month", arrayList.get(11));
+                model.addAttribute("url3device", arrayList.get(12));
+                model.addAttribute("url3gender", arrayList.get(13));
+                model.addAttribute("url3year3", arrayList.get(14));
+                model.addAttribute("url3month3", arrayList.get(15));
+                model.addAttribute("url3day3", arrayList.get(16));
+                model.addAttribute("url3year4", arrayList.get(17));
+                model.addAttribute("url3month4", arrayList.get(18));
+                model.addAttribute("url3day4", arrayList.get(19));
+                model.addAttribute("url3select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url3device2", arrayList.get(21));
+                model.addAttribute("url3gender2", arrayList.get(22));
+                model.addAttribute("isTrue3", isTrue3);
+            } else if (i==2&&favoriteURL==""){
+                isTrue3 = false;
+                model.addAttribute("isTrue3", isTrue3);
+            }
+            if (i == 3&&favoriteURL!="") {
+                model.addAttribute("url4", favoriteURL);
+                model.addAttribute("url4query1", arrayList.get(0));
+                model.addAttribute("url4query2", arrayList.get(1));
+                model.addAttribute("url4query3", arrayList.get(2));
+                model.addAttribute("url4query4", arrayList.get(3));
+                model.addAttribute("url4query5", arrayList.get(4));
+                model.addAttribute("url4year1", arrayList.get(5));
+                model.addAttribute("url4month1", arrayList.get(6));
+                model.addAttribute("url4day1", arrayList.get(7));
+                model.addAttribute("url4year2", arrayList.get(8));
+                model.addAttribute("url4month2", arrayList.get(9));
+                model.addAttribute("url4day2", arrayList.get(10));
+                model.addAttribute("url4select_day_week_month", arrayList.get(11));
+                model.addAttribute("url4device", arrayList.get(12));
+                model.addAttribute("url4gender", arrayList.get(13));
+                model.addAttribute("url4year3", arrayList.get(14));
+                model.addAttribute("url4month3", arrayList.get(15));
+                model.addAttribute("url4day3", arrayList.get(16));
+                model.addAttribute("url4year4", arrayList.get(17));
+                model.addAttribute("url4month4", arrayList.get(18));
+                model.addAttribute("url4day4", arrayList.get(19));
+                model.addAttribute("url4select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url4device2", arrayList.get(21));
+                model.addAttribute("url4gender2", arrayList.get(22));
+                model.addAttribute("isTrue4", isTrue4);
+            } else if (i==3&&favoriteURL==""){
+                isTrue4 = false;
+                model.addAttribute("isTrue4", isTrue4);
+            }
+            if (i == 4&&favoriteURL!="") {
+                model.addAttribute("url5", favoriteURL);
+                model.addAttribute("url5query1", arrayList.get(0));
+                model.addAttribute("url5query2", arrayList.get(1));
+                model.addAttribute("url5query3", arrayList.get(2));
+                model.addAttribute("url5query4", arrayList.get(3));
+                model.addAttribute("url5query5", arrayList.get(4));
+                model.addAttribute("url5year1", arrayList.get(5));
+                model.addAttribute("url5month1", arrayList.get(6));
+                model.addAttribute("url5day1", arrayList.get(7));
+                model.addAttribute("url5year2", arrayList.get(8));
+                model.addAttribute("url5month2", arrayList.get(9));
+                model.addAttribute("url5day2", arrayList.get(10));
+                model.addAttribute("url5select_day_week_month", arrayList.get(11));
+                model.addAttribute("url5device", arrayList.get(12));
+                model.addAttribute("url5gender", arrayList.get(13));
+                model.addAttribute("url5year3", arrayList.get(14));
+                model.addAttribute("url5month3", arrayList.get(15));
+                model.addAttribute("url5day3", arrayList.get(16));
+                model.addAttribute("url5year4", arrayList.get(17));
+                model.addAttribute("url5month4", arrayList.get(18));
+                model.addAttribute("url5day4", arrayList.get(19));
+                model.addAttribute("url5select_day_week_month2", arrayList.get(20));
+                model.addAttribute("url5device2", arrayList.get(21));
+                model.addAttribute("url5gender2", arrayList.get(22));
+                model.addAttribute("isTrue5", isTrue5);
+            } else if (i==4&&favoriteURL==""){
+                isTrue5 = false;
+                model.addAttribute("isTrue5", isTrue5);
+            }
+        }
+
+        if (isTrue1==true || isTrue2==true || isTrue3==true || isTrue4==true || isTrue5==true){
+            isTrueAll=true;
+            model.addAttribute("isTrueAll", isTrueAll);
+        }
+
         return "index_result";
     }
+
 
 
     @GetMapping("/member/reset/password")
