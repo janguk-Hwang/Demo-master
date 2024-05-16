@@ -185,6 +185,11 @@ public class MemberController {
             favoriteURL = memberService.getDbFavriteURL(userName).get(i);
             ArrayList<String> arrayList = memberService.extractUrl(favoriteURL);
 
+            for (int j = 0; j < arrayList.size(); j++) {
+                System.out.print(arrayList.get(j) + " ");
+            }
+            System.out.println();
+
             if (i == 0&&favoriteURL!="") {
                 model.addAttribute("url1", favoriteURL);
                 model.addAttribute("url1query1", arrayList.get(0));

@@ -445,6 +445,11 @@
         var myChart1;
         var myChart2;
 
+        function pageUrl() {
+            var sHref = decodeURI(location.href);
+            return sHref;
+        }
+
         window.addEventListener('resize', function() {
             myChart1.resize();
             myChart2.resize();
@@ -745,11 +750,18 @@
         <button class="custom-btn btn-7" id="drawLine" value="line">Line Chart</button>
         <button class="custom-btn btn-7" id="drawBar" value="bar">Bar Chart</button>
         <button class="custom-btn btn-7" onclick="window.location.href='/index_result'">검색화면으로</button>
-        <form method="post"><button class="custom-btn btn-7" type="submit" name="addFavorite" value="1">즐겨찾기 추가</button></form>
+        <form action="/member/search_result" method="post">
+                <input type="hidden" name="url" id="urlInput" value="">
+                <script th:inline="javascript">
+                    if (pageUrl()!="http://localhost:8080/member/search_result"&&pageUrl()!=[[${url1}]]&&pageUrl()!=[[${url2}]]&&pageUrl()!=[[${url3}]]&&pageUrl()!=[[${url4}]]) {
+                        document.getElementById('urlInput').value = pageUrl();
+                    }
+                </script>
+                <button class="btn" type="submit">즐겨찾기 추가</button>
+        </form>
     </div>
 </div>
 <div class="card card-4" id="chart1"></div>
-<h1></h1>
 <div class="card card-4" id="chart2"></div>
 </body>
 </html>
