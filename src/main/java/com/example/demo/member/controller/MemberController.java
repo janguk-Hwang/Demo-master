@@ -64,116 +64,17 @@ public class MemberController {
         //email_auth.html에서 result의 boolean타입을 활용해 뷰를 출력한다.
     }
 
-    @GetMapping("/search_result")
-    public String search_result( Model model,
-                                 @RequestParam(name = "query1", required = false, defaultValue = "") String query1,
-                                 @RequestParam(name = "query2", required = false, defaultValue = "") String query2,
-                                 @RequestParam(name = "query3", required = false, defaultValue = "") String query3,
-                                 @RequestParam(name = "query4", required = false, defaultValue = "") String query4,
-                                 @RequestParam(name = "query5", required = false, defaultValue = "") String query5,
-                                 @RequestParam(name = "year", required = false, defaultValue = "") String year1,
-                                 @RequestParam(name = "month", required = false, defaultValue = "") String month1,
-                                 @RequestParam(name = "day", required = false, defaultValue = "") String day1,
-                                 @RequestParam(name = "year2", required = false, defaultValue = "") String year2,
-                                 @RequestParam(name = "month2", required = false, defaultValue = "") String month2,
-                                 @RequestParam(name = "day2", required = false, defaultValue = "") String day2,
-                                 @RequestParam(name = "select_day_week_month", required = false, defaultValue = "") String timeunit,
-                                 @RequestParam(name = "device", required = false, defaultValue = "") String coverage,
-                                 @RequestParam(name = "gender", required = false, defaultValue = "") String gender,
-                                 @RequestParam(name = "age", required = false, defaultValue = "") String[] age,
-                                 @RequestParam(name = "year3", required = false, defaultValue = "") String year3,
-                                 @RequestParam(name = "month3", required = false, defaultValue = "") String month3,
-                                 @RequestParam(name = "day3", required = false, defaultValue = "") String day3,
-                                 @RequestParam(name = "year4", required = false, defaultValue = "") String year4,
-                                 @RequestParam(name = "month4", required = false, defaultValue = "") String month4,
-                                 @RequestParam(name = "day4", required = false, defaultValue = "") String day4,
-                                 @RequestParam(name = "select_day_week_month2", required = false, defaultValue = "") String timeunit2,
-                                 @RequestParam(name = "device2", required = false, defaultValue = "") String coverage2,
-                                 @RequestParam(name = "gender2", required = false, defaultValue = "") String gender2,
-                                 @RequestParam(name = "age2", required = false, defaultValue = "") String[] age2,
-                                 Principal principal) throws JSONException  {
-        List<String> query1XAxisData = memberService.apiResponseX(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-        List<String> query1XAxis2Data = memberService.apiResponseX(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-        List<String> query1SeriesData = memberService.apiResponseY(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-        List<String> query1Series2Data = memberService.apiResponseY(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-
-        model.addAttribute("xAxisData", query1XAxisData);
-        model.addAttribute("xAxis2Data", query1XAxis2Data);
-        model.addAttribute("seriesData1", query1SeriesData);
-        model.addAttribute("series2Data1", query1Series2Data);
-        model.addAttribute("query1", query1);
-        model.addAttribute("query2", query2);
-        model.addAttribute("query3", query3);
-        model.addAttribute("query4", query4);
-        model.addAttribute("query5", query5);
-
+    @GetMapping("/favorite_url")
+    public String favorite_url( Model model,
+                                @RequestParam(name = "url", required = false, defaultValue = "") String url,
+                                Principal principal) throws JSONException  {
         String userName = principal.getName();
-
         String favoriteURL = "";
-
-        for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
-            favoriteURL = memberService.getDbFavriteURL(userName).get(i);
-            if (i==0){
-                model.addAttribute("url1", favoriteURL);
-            } else if (i==1) {
-                model.addAttribute("url2", favoriteURL);
-            } else if (i==2) {
-                model.addAttribute("url3", favoriteURL);
-            } else if (i==3) {
-                model.addAttribute("url4", favoriteURL);
-            } else if (i==4) {
-                model.addAttribute("url5", favoriteURL);
-            }
-        }
-
-        if (!query2.equals("")){
-            List<String> query2SeriesData = memberService.apiResponseY(query2, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-            List<String> query2Series2Data = memberService.apiResponseY(query2, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-            model.addAttribute("seriesData2", query2SeriesData);
-            model.addAttribute("series2Data2", query2Series2Data);
-        }
-
-        if (!query3.equals("")){
-            List<String> query3SeriesData = memberService.apiResponseY(query3, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-            List<String> query3Series2Data = memberService.apiResponseY(query3, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-            model.addAttribute("seriesData3", query3SeriesData);
-            model.addAttribute("series2Data3", query3Series2Data);
-        }
-
-        if (!query4.equals("")){
-            List<String> query4SeriesData = memberService.apiResponseY(query4, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-            List<String> query4Series2Data = memberService.apiResponseY(query4, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-            model.addAttribute("seriesData4", query4SeriesData);
-            model.addAttribute("series2Data4", query4Series2Data);
-        }
-
-        if (!query5.equals("")){
-            List<String> query5SeriesData = memberService.apiResponseY(query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-            List<String> query5Series2Data = memberService.apiResponseY(query5, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-            model.addAttribute("seriesData5", query5SeriesData);
-            model.addAttribute("series2Data5", query5Series2Data);
-        }
-        return "search_result";
-    }
-
-    @PostMapping("/search_result")
-    public String search_result( @RequestParam(name = "url", required = false, defaultValue = "") String url,
-                                 Principal principal) throws JSONException {
-        String userName = principal.getName();
 
         if (!url.equals("")){
             memberService.setDbFavoriteURL(url,userName);
         }
 
-        return "search_result";
-    }
-
-    @GetMapping("/index_result")
-    public String search(Principal principal,
-                         Model model){
-        String userName = principal.getName();
-
-        String favoriteURL = "";
         boolean isTrue1 = true;
         boolean isTrue2 = true;
         boolean isTrue3 = true;
@@ -414,18 +315,18 @@ public class MemberController {
             model.addAttribute("isTrueAll", isTrueAll);
         }
 
-        return "index_result";
+        return "favorite_url";
     }
 
-    @PostMapping("/index_result")
-    public String search(Principal principal,
-                         Model model,
-                         @RequestParam(name = "removeAllUrl", required = false, defaultValue = "") String removeAllUrl,
-                         @RequestParam(name = "removeUrl1", required = false, defaultValue = "") String removeUrl1,
-                         @RequestParam(name = "removeUrl2", required = false, defaultValue = "") String removeUrl2,
-                         @RequestParam(name = "removeUrl3", required = false, defaultValue = "") String removeUrl3,
-                         @RequestParam(name = "removeUrl4", required = false, defaultValue = "") String removeUrl4,
-                         @RequestParam(name = "removeUrl5", required = false, defaultValue = "") String removeUrl5) {
+    @PostMapping("/favorite_url")
+    public String search_result(@RequestParam(name = "removeAllUrl", required = false, defaultValue = "") String removeAllUrl,
+                                @RequestParam(name = "removeUrl1", required = false, defaultValue = "") String removeUrl1,
+                                @RequestParam(name = "removeUrl2", required = false, defaultValue = "") String removeUrl2,
+                                @RequestParam(name = "removeUrl3", required = false, defaultValue = "") String removeUrl3,
+                                @RequestParam(name = "removeUrl4", required = false, defaultValue = "") String removeUrl4,
+                                @RequestParam(name = "removeUrl5", required = false, defaultValue = "") String removeUrl5,
+                                Model model,
+                                Principal principal) throws JSONException {
         String userName = principal.getName();
 
         if (removeAllUrl.equals("즐겨찾기 전체 삭제")){
@@ -615,6 +516,108 @@ public class MemberController {
             isTrueAll=true;
             model.addAttribute("isTrueAll", isTrueAll);
         }
+
+        return "favorite_url";
+    }
+
+    @GetMapping("/index_result")
+    public String search(Principal principal,
+                         @RequestParam(name = "query1", required = false, defaultValue = "") String query1,
+                         @RequestParam(name = "query2", required = false, defaultValue = "") String query2,
+                         @RequestParam(name = "query3", required = false, defaultValue = "") String query3,
+                         @RequestParam(name = "query4", required = false, defaultValue = "") String query4,
+                         @RequestParam(name = "query5", required = false, defaultValue = "") String query5,
+                         @RequestParam(name = "year", required = false, defaultValue = "") String year1,
+                         @RequestParam(name = "month", required = false, defaultValue = "") String month1,
+                         @RequestParam(name = "day", required = false, defaultValue = "") String day1,
+                         @RequestParam(name = "year2", required = false, defaultValue = "") String year2,
+                         @RequestParam(name = "month2", required = false, defaultValue = "") String month2,
+                         @RequestParam(name = "day2", required = false, defaultValue = "") String day2,
+                         @RequestParam(name = "select_day_week_month", required = false, defaultValue = "") String timeunit,
+                         @RequestParam(name = "device", required = false, defaultValue = "") String coverage,
+                         @RequestParam(name = "gender", required = false, defaultValue = "") String gender,
+                         @RequestParam(name = "age", required = false, defaultValue = "") String[] age,
+                         @RequestParam(name = "year3", required = false, defaultValue = "") String year3,
+                         @RequestParam(name = "month3", required = false, defaultValue = "") String month3,
+                         @RequestParam(name = "day3", required = false, defaultValue = "") String day3,
+                         @RequestParam(name = "year4", required = false, defaultValue = "") String year4,
+                         @RequestParam(name = "month4", required = false, defaultValue = "") String month4,
+                         @RequestParam(name = "day4", required = false, defaultValue = "") String day4,
+                         @RequestParam(name = "select_day_week_month2", required = false, defaultValue = "") String timeunit2,
+                         @RequestParam(name = "device2", required = false, defaultValue = "") String coverage2,
+                         @RequestParam(name = "gender2", required = false, defaultValue = "") String gender2,
+                         @RequestParam(name = "age2", required = false, defaultValue = "") String[] age2,
+                         Model model){
+        String userName = principal.getName();
+
+        List<String> query1XAxisData = memberService.apiResponseX(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+        List<String> query1XAxis2Data = memberService.apiResponseX(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
+        List<String> query1SeriesData = memberService.apiResponseY(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+        List<String> query1Series2Data = memberService.apiResponseY(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
+
+        model.addAttribute("xAxisData", query1XAxisData);
+        model.addAttribute("xAxis2Data", query1XAxis2Data);
+        model.addAttribute("seriesData1", query1SeriesData);
+        model.addAttribute("series2Data1", query1Series2Data);
+        model.addAttribute("query1", query1);
+        model.addAttribute("query2", query2);
+        model.addAttribute("query3", query3);
+        model.addAttribute("query4", query4);
+        model.addAttribute("query5", query5);
+
+        String favoriteURL = "";
+
+        for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
+            favoriteURL = memberService.getDbFavriteURL(userName).get(i);
+            if (i==0){
+                model.addAttribute("url1", favoriteURL);
+            } else if (i==1) {
+                model.addAttribute("url2", favoriteURL);
+            } else if (i==2) {
+                model.addAttribute("url3", favoriteURL);
+            } else if (i==3) {
+                model.addAttribute("url4", favoriteURL);
+            } else if (i==4) {
+                model.addAttribute("url5", favoriteURL);
+            }
+        }
+
+        if (!query2.equals("")){
+            List<String> query2SeriesData = memberService.apiResponseY(query2, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query2Series2Data = memberService.apiResponseY(query2, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
+            model.addAttribute("seriesData2", query2SeriesData);
+            model.addAttribute("series2Data2", query2Series2Data);
+        }
+
+        if (!query3.equals("")){
+            List<String> query3SeriesData = memberService.apiResponseY(query3, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query3Series2Data = memberService.apiResponseY(query3, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
+            model.addAttribute("seriesData3", query3SeriesData);
+            model.addAttribute("series2Data3", query3Series2Data);
+        }
+
+        if (!query4.equals("")){
+            List<String> query4SeriesData = memberService.apiResponseY(query4, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query4Series2Data = memberService.apiResponseY(query4, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
+            model.addAttribute("seriesData4", query4SeriesData);
+            model.addAttribute("series2Data4", query4Series2Data);
+        }
+
+        if (!query5.equals("")){
+            List<String> query5SeriesData = memberService.apiResponseY(query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
+            List<String> query5Series2Data = memberService.apiResponseY(query5, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
+            model.addAttribute("seriesData5", query5SeriesData);
+            model.addAttribute("series2Data5", query5Series2Data);
+        }
+
+        return "index_result";
+    }
+
+    @PostMapping("/index_result")
+    public String search(Principal principal,
+
+                         Model model) {
+        String userName = principal.getName();
 
         return "index_result";
     }

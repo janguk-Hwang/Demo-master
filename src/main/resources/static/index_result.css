@@ -483,3 +483,22 @@ button {
 button:hover {
     background-color: gray;
 }
+ #chart1 {
+     width: 100%;
+     height: 500px;
+     background-color: #f9f9f9;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+     padding: 20px;
+     box-sizing: border-box;
+ }
+
+#chart2 {
+    width: 100%;
+    height: 500px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    box-sizing: border-box;
+}

@@ -9,6 +9,258 @@
     <link rel="stylesheet" type="text/css" href="https://ssl.pstatic.net/static.datalab/202405030736/css/datalab.css">
     <link rel="stylesheet" type="text/css" href="https://ssl.pstatic.net/static.datalab/202405030736/css/graph.css">
     <link rel="stylesheet" href="index_result.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script th:inline="javascript">
+        function pageUrl() {
+            var sHref = decodeURI(location.href);
+            return sHref;
+        }
+
+        window.onload = function() {
+            document.getElementById("drawLine").addEventListener('click', function() {
+                drawChart1('line');
+                drawChart2('line');
+            });
+            document.getElementById("drawBar").addEventListener('click', function() {
+                drawChart1('bar');
+                drawChart2('bar');
+            });
+
+            drawChart1('line');
+            drawChart2('line');
+        };
+
+        function drawChart1(type) {
+            var myChart = echarts.init(document.getElementById('chart1'));
+
+            var xAxisData = [[${xAxisData}]];
+            let seriesData1 = [[${seriesData1}]];
+            let seriesData2 = [];
+            let seriesData3 = [];
+            let seriesData4 = [];
+            let seriesData5 = [];
+
+            if ([[${query2}]]!="") {
+                seriesData2 = [[${seriesData2}]];
+            }
+
+            if ([[${query3}]]!="") {
+                seriesData3 = [[${seriesData3}]];
+            }
+
+            if ([[${query4}]]!="") {
+                seriesData4 = [[${seriesData4}]];
+            }
+
+            if ([[${query5}]]!="") {
+                seriesData5 = [[${seriesData5}]];
+            }
+
+            let legendData = []; // 범례 데이터를 동적으로 저장할 배열
+
+            if ([[${query1}]] !== "") {
+                legendData.push('[[${query1}]]');
+            }
+            if ([[${query2}]]!="") {
+                legendData.push('[[${query2}]]');
+            }
+            if ([[${query3}]]!="") {
+                legendData.push('[[${query3}]]');
+            }
+            if ([[${query4}]]!="") {
+                legendData.push('[[${query4}]]');
+            }
+            if ([[${query5}]]!="") {
+                legendData.push('[[${query5}]]');
+            }
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    position: function (point, params, dom, rect, size) {
+                        var x = 150; // x 좌표 조절
+                        var y = 50; // y 좌표 조절
+                        console.log(point[0])
+                        if(point[0]<510){
+                            return [point[0], point[1] - y];
+                        } else if (point[0]>510){
+                            return [point[0]-x, point[1] - y];
+                        }
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: legendData
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '[[${query1}]]',
+                        data: seriesData1,
+                        type: type,
+                        color: 'rgb(255, 0, 0)'
+                    },
+                    {
+                        name: '[[${query2}]]',
+                        data: seriesData2,
+                        type: type,
+                        color: 'rgb(200, 200, 0)'
+                    },
+                    {
+                        name: '[[${query3}]]',
+                        data: seriesData3,
+                        type: type,
+                        color: 'rgb(0, 200, 200)'
+                    },
+                    {
+                        name: '[[${query4}]]',
+                        data: seriesData4,
+                        type: type,
+                        color: 'rgb(0, 100, 235)'
+                    },
+                    {
+                        name: '[[${query5}]]',
+                        data: seriesData5,
+                        type: type,
+                        color: 'rgb(200, 200, 255)'
+                    }
+                ],
+                label: {
+                    show: false,
+                    position: 'top',
+                }
+            };
+            myChart.setOption(option);
+        }
+
+        function drawChart2(type) {
+            var myChart = echarts.init(document.getElementById('chart2'));
+
+            var xAxisData = [[${xAxis2Data}]];
+            let seriesData1 = [[${series2Data1}]];
+            let seriesData2 = [];
+            let seriesData3 = [];
+            let seriesData4 = [];
+            let seriesData5 = [];
+
+            if ([[${query2}]]!="") {
+                seriesData2 = [[${series2Data2}]];
+            }
+
+            if ([[${query3}]]!="") {
+                seriesData3 = [[${series2Data3}]];
+            }
+
+            if ([[${query4}]]!="") {
+                seriesData4 = [[${series2Data4}]];
+            }
+
+            if ([[${query5}]]!="") {
+                seriesData5 = [[${series2Data5}]];
+            }
+
+            let legendData = []; // 범례 데이터를 동적으로 저장할 배열
+
+            if ([[${query1}]] !== "") {
+                legendData.push('[[${query1}]]');
+            }
+            if ([[${query2}]]!="") {
+                legendData.push('[[${query2}]]');
+            }
+            if ([[${query3}]]!="") {
+                legendData.push('[[${query3}]]');
+            }
+            if ([[${query4}]]!="") {
+                legendData.push('[[${query4}]]');
+            }
+            if ([[${query5}]]!="") {
+                legendData.push('[[${query5}]]');
+            }
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    position: function (point, params, dom, rect, size) {
+                        var x = 150; // x 좌표 조절
+                        var y = 50; // y 좌표 조절
+                        console.log(point[0])
+                        if(point[0]<510){
+                            return [point[0], point[1] - y];
+                        } else if (point[0]>510){
+                            return [point[0]-x, point[1] - y];
+                        }
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: legendData
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '[[${query1}]]',
+                        data: seriesData1,
+                        type: type,
+                        color: 'rgb(255, 0, 0)'
+                    },
+                    {
+                        name: '[[${query2}]]',
+                        data: seriesData2,
+                        type: type,
+                        color: 'rgb(200, 200, 0)'
+                    },
+                    {
+                        name: '[[${query3}]]',
+                        data: seriesData3,
+                        type: type,
+                        color: 'rgb(0, 200, 200)'
+                    },
+                    {
+                        name: '[[${query4}]]',
+                        data: seriesData4,
+                        type: type,
+                        color: 'rgb(0, 100, 235)'
+                    },
+                    {
+                        name: '[[${query5}]]',
+                        data: seriesData5,
+                        type: type,
+                        color: 'rgb(200, 200, 255)'
+                    }
+                ],
+                label: {
+                    show: false,
+                    position: 'top',
+                }
+            };
+            myChart.setOption(option);
+        }
+    </script>
     <script>
         function logout() {
             alert('로그아웃되었습니다.');
@@ -19,13 +271,21 @@
         function toggleAllCheckboxes(group, source) {
             const checkboxes = document.querySelectorAll(`input[name=${group}]`);
             checkboxes.forEach(checkbox => {
-                checkbox.checked = source.checked;
+                checkbox.checked = false; // 모든 체크박스를 해제
             });
+            source.checked = true; // 전체 체크박스만 체크
         }
 
         function updateAllCheckbox(group, allCheckboxId) {
             const checkboxes = document.querySelectorAll(`input[name=${group}]`);
-            document.getElementById(allCheckboxId).checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            const allCheckbox = document.getElementById(allCheckboxId);
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+            if (!anyChecked) {
+                allCheckbox.checked = true; // 아무것도 체크되지 않는 경우 전체 체크
+            } else {
+                allCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            }
         }
 
         function validateCheckboxSelection() {
@@ -59,13 +319,118 @@
             });
         });
     </script>
-</head>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            for (let i = 1; i <= 4; i++) {
+                const yearSelect = document.getElementById(`selectYear${i}`);
+                const monthSelect = document.getElementById(`selectMonth${i}`);
+                const daySelect = document.getElementById(`selectDay${i}`);
+
+                const today = new Date();
+                const currentYear = today.getFullYear();
+                const currentMonth = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+                const currentDate = today.getDate();
+
+                function updateMonths(yearSelect, monthSelect) {
+                    const selectedYear = parseInt(yearSelect.value);
+                    // 기존의 월 옵션을 모두 제거합니다.
+                    monthSelect.innerHTML = '';
+
+                    for (let month = 1; month <= 12; month++) {
+                        // 현재 년도보다 작거나 같은 경우에만 월을 추가합니다.
+                        if (selectedYear < currentYear || (selectedYear === currentYear && month <= currentMonth)) {
+                            const option = document.createElement('option');
+                            option.value = month.toString().padStart(2, '0');
+                            option.textContent = month;
+                            monthSelect.appendChild(option);
+                        }
+                    }
+
+                    // 월 셀렉트 박스를 현재 월로 설정합니다.
+                    monthSelect.value = currentMonth.toString().padStart(2, '0');
+                }
+
+                function updateDays(yearSelect, monthSelect, daySelect, groupNumber) {
+                    const year = parseInt(yearSelect.value);
+                    const month = parseInt(monthSelect.value);
+                    let daysInMonth;
+
+                    const selectedDay = parseInt(daySelect.value);
+
+                    if (month === 2 && ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)) {
+                        daysInMonth = 29;
+                    } else {
+                        daysInMonth = new Date(year, month, 0).getDate();
+                    }
+
+                    daySelect.innerHTML = '';
+
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const option = document.createElement('option');
+                        option.value = day.toString().padStart(2, '0');
+                        option.textContent = day;
+
+                        const selectedDate = new Date(year, month - 1, day);
+
+                        if (selectedDate <= today) {
+                            if (groupNumber === 1 || groupNumber === 3) {
+                                if (day === currentDate && (year === currentYear - 2 || year === currentYear - 1) && month === currentMonth) {
+                                    option.selected = true;
+                                }
+                            } else {
+                                if (day === currentDate && year === currentYear && month === currentMonth) {
+                                    option.selected = true;
+                                }
+                            }
+                            daySelect.appendChild(option);
+                        }
+                    }
+
+                    if (selectedDay && selectedDay <= daysInMonth) {
+                        daySelect.value = selectedDay.toString().padStart(2, '0');
+                    }
+
+                    const selectedDate = new Date(year, month - 1, parseInt(daySelect.value));
+                    if (selectedDate > today) {
+                        alert('미래 날짜는 선택할 수 없습니다.');
+                        yearSelect.value = currentYear.toString();
+                        monthSelect.value = currentMonth.toString().padStart(2, '0');
+                        daySelect.value = currentDate.toString().padStart(2, '0');
+                    }
+                }
+
+                // 연도를 조정합니다. yearSelect1은 -2, yearSelect3은 -1 합니다.
+                if (i === 1) {
+                    yearSelect.value = (currentYear - 2).toString();
+                } else if (i === 3) {
+                    yearSelect.value = (currentYear - 1).toString();
+                } else {
+                    yearSelect.value = currentYear.toString();
+                }
+
+                // 월 셀렉트 박스를 업데이트합니다.
+                updateMonths(yearSelect, monthSelect);
+
+                // 일 셀렉트 박스를 업데이트합니다.
+                updateDays(yearSelect, monthSelect, daySelect, i);
+
+                // 셀렉트 박스 값 변경 시 업데이트합니다.
+                yearSelect.addEventListener('change', () => {
+                    updateMonths(yearSelect, monthSelect);
+                    updateDays(yearSelect, monthSelect, daySelect, i);
+                });
+                monthSelect.addEventListener('change', () => updateDays(yearSelect, monthSelect, daySelect, i));
+                daySelect.addEventListener('change', () => updateDays(yearSelect, monthSelect, daySelect, i));
+            }
+        });
+    </script>
+</head>
 <body>
 <a href="/index_result">
     <img src="/Logo.png" alt="Leto 데이터랩 로고" height="146" width="255">
 </a>
-<form action="search_result" method="get" id="myForm">
+<form action="index_result" method="get" id="myForm">
     <div id="nav-bar">
         <input id="nav-toggle" type="checkbox" checked/>
         <div id="nav-header"><a id="nav-title" href="/index_result" target="_blank"><i class="fab fa-codepen"></i>LETO Trends</a>
@@ -136,7 +501,7 @@
             <option value="2019">2019</option>
             <option value="2020">2020</option>
             <option value="2021">2021</option>
-            <option selected value="2022">2022</option>
+            <option value="2022">2022</option>
             <option value="2023">2023</option>
             <option value="2024">2024</option>
         </select>
@@ -145,20 +510,6 @@
             <option value="02">02</option>
             <option value="03">03</option>
             <option value="04">04</option>
-            <option selected value="05">05</option>
-            <option value="06">06</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-        </select>
-            <label for="selectDay1"></label><select name="day" id="selectDay1">
-            <option value="01">01</option>
-            <option value="02">02</option>
-            <option value="03">03</option>
-            <option value="04">04</option>
             <option value="05">05</option>
             <option value="06">06</option>
             <option value="07">07</option>
@@ -167,26 +518,12 @@
             <option value="10">10</option>
             <option value="11">11</option>
             <option value="12">12</option>
-            <option selected value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="22">22</option>
-            <option value="23">23</option>
-            <option value="24">24</option>
-            <option value="25">25</option>
-            <option value="26">26</option>
-            <option value="27">27</option>
-            <option value="28">28</option>
-            <option value="29">29</option>
-            <option value="30">30</option>
-            <option value="31">31</option>
-        </select><small> 에서</small>
+        </select>
+            <label for="selectDay1"></label>
+            <select name="day" id="selectDay1">
+                <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
+            </select>
+            <small> 에서</small>
             <label for="selectYear2"></label><select name="year2" id="selectYear2">
             <option value="2016">2016</option>
             <option value="2017">2017</option>
@@ -195,24 +532,10 @@
             <option value="2020">2020</option>
             <option value="2021">2021</option>
             <option value="2022">2022</option>
-            <option selected value="2023">2023</option>
+            <option value="2023">2023</option>
             <option value="2024">2024</option>
         </select>
             <label for="selectMonth2"></label><select name="month2" id="selectMonth2">
-            <option value="01">01</option>
-            <option value="02">02</option>
-            <option value="03">03</option>
-            <option value="04">04</option>
-            <option selected value="05">05</option>
-            <option value="06">06</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-        </select>
-            <label for="selectDay2"></label><select name="day2" id="selectDay2">
             <option value="01">01</option>
             <option value="02">02</option>
             <option value="03">03</option>
@@ -225,25 +548,10 @@
             <option value="10">10</option>
             <option value="11">11</option>
             <option value="12">12</option>
-            <option selected value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="22">22</option>
-            <option value="23">23</option>
-            <option value="24">24</option>
-            <option value="25">25</option>
-            <option value="26">26</option>
-            <option value="27">27</option>
-            <option value="28">28</option>
-            <option value="29">29</option>
-            <option value="30">30</option>
-            <option value="31">31</option>
+        </select>
+            <label for="selectDay2"></label>
+            <select name="day2" id="selectDay2">
+                <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
         </select><small> 까지</small>
             <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
             <strong class="title">단위</strong>
@@ -273,7 +581,7 @@
                     <a>&nbsp</a>
                     <strong class="title v2">연령선택</strong>
                     <span class="select_chk v1">
-                        <input type="checkbox" id="item_age_all" class="chk" name="age_all" value="" onclick="toggleAllCheckboxes('age', this)">
+                        <input type="checkbox" id="item_age_all" class="chk" name="age" value="" onclick="toggleAllCheckboxes('age', this)">
                         <label class="lbl " for="item_age_all">전체&nbsp</label>
                     </span>
                     <span class="select_chk v1">
@@ -333,26 +641,10 @@
             <option value="2020">2020</option>
             <option value="2021">2021</option>
             <option value="2022">2022</option>
-            <option selected value="2023">2023</option>
+            <option value="2023">2023</option>
             <option value="2024">2024</option>
         </select>
             <label for="selectMonth1"></label><select name="month3" id="selectMonth3">
-            <option selected>월</option>
-            <option value="01">01</option>
-            <option value="02">02</option>
-            <option value="03">03</option>
-            <option value="04">04</option>
-            <option selected value="05">05</option>
-            <option value="06">06</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-        </select>
-            <label for="selectDay1"></label><select name="day3" id="selectDay3">
-            <option selected>일</option>
             <option value="01">01</option>
             <option value="02">02</option>
             <option value="03">03</option>
@@ -365,25 +657,9 @@
             <option value="10">10</option>
             <option value="11">11</option>
             <option value="12">12</option>
-            <option selected value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="22">22</option>
-            <option value="23">23</option>
-            <option value="24">24</option>
-            <option value="25">25</option>
-            <option value="26">26</option>
-            <option value="27">27</option>
-            <option value="28">28</option>
-            <option value="29">29</option>
-            <option value="30">30</option>
-            <option value="31">31</option>
+        </select>
+            <label for="selectDay1"></label><select name="day3" id="selectDay3">
+            <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
         </select><small> 에서</small>
             <label for="selectYear2"></label><select name="year4" id="selectYear4">
             <option value="2016">2016</option>
@@ -394,25 +670,10 @@
             <option value="2021">2021</option>
             <option value="2022">2022</option>
             <option value="2023">2023</option>
-            <option selected value="2024">2024</option>
+            <option value="2024">2024</option>
         </select>
             <label for="selectMonth2"></label><select name="month4" id="selectMonth4">
             <option selected>월</option>
-            <option value="01">01</option>
-            <option value="02">02</option>
-            <option value="03">03</option>
-            <option value="04">04</option>
-            <option selected value="05">05</option>
-            <option value="06">06</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-        </select>
-            <label for="selectDay2"></label><select name="day4" id="selectDay4">
-            <option selected>일</option>
             <option value="01">01</option>
             <option value="02">02</option>
             <option value="03">03</option>
@@ -425,25 +686,9 @@
             <option value="10">10</option>
             <option value="11">11</option>
             <option value="12">12</option>
-            <option selected value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="22">22</option>
-            <option value="23">23</option>
-            <option value="24">24</option>
-            <option value="25">25</option>
-            <option value="26">26</option>
-            <option value="27">27</option>
-            <option value="28">28</option>
-            <option value="29">29</option>
-            <option value="30">30</option>
-            <option value="31">31</option>
+        </select>
+            <label for="selectDay2"></label><select name="day4" id="selectDay4">
+            <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
         </select><small> 까지</small>
             <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
             <strong class="title">단위</strong>
@@ -473,7 +718,7 @@
                     <a>&nbsp</a>
                     <strong class="title v2">연령선택</strong>
                     <span class="select_chk v1">
-                        <input type="checkbox" id="item_age2_all" class="chk" name="age2_all" value="" onclick="toggleAllCheckboxes('age2', this)">
+                        <input type="checkbox" id="item_age2_all" class="chk" name="age2" value="" onclick="toggleAllCheckboxes('age2', this)">
                         <label class="lbl " for="item_age2_all">전체&nbsp</label>
                     </span>
                     <span class="select_chk v1">
@@ -526,11 +771,23 @@
     </div>
     <button class="custom-btn btn-7 item4" id="search_button" type="submit">LETO 검색 데이터 조회</button>
 </form>
-<div th:if="${isTrueAll}"><form action="/index_result" method="post"><button class="custom-btn btn-7" type="submit" name="removeAllUrl" value="즐겨찾기 전체 삭제">즐겨찾기 전체 삭제</button></form></div>
-<div th:if="${isTrue1}"><form action="/index_result" method="post"><a th:href="@{${url1}}"><p>검색어1 : <strong><span th:text="${url1query1}"></span></strong><span th:if="${!#strings.isEmpty(url1query2)}"> ,검색어2 : <strong><span th:text="${url1query2}"></span></strong></span><span th:if="${!#strings.isEmpty(url1query3)}"> ,검색어3 : <strong><span th:text="${url1query3}"></span></strong></span><span th:if="${!#strings.isEmpty(url1query4)}"> ,검색어4 : <strong><span th:text="${url1query4}"></span></strong></span><span th th:if="${!#strings.isEmpty(url1query5)}"> ,검색어5 : <strong><span th:text="${url1query5}"></span></strong></span> / 비교군1 기간: <strong><span th:text="${url1year1}"></span>-<span th:text="${url1month1}"></span>-<span th:text="${url1day1}"></span>~<span th:text="${url1year2}"></span>-<span th:text="${url1month2}"></span>-<span th:text="${url1day2}"></span></strong>, 단위 : <strong><span th:text="${url1select_day_week_month}"></span></strong>, 범위 : <strong><span th:text="${url1device}"></span></strong>, 성별 : <strong><span th:text="${url1gender}"></span></strong>, 연령: <strong><span th:each="url1age1 : ${url1age1}"><span th:text="${url1age1}"></span>,</span></strong>  비교군2 기간: <strong><span th:text="${url1year3}"></span>-<span th:text="${url1month3}"></span>-<span th:text="${url1day3}"></span></strong>~<strong><span th:text="${url1year4}"></span>-<span th:text="${url1month4}"></span>-<span th:text="${url1day4}"></span></strong>, 단위 : <strong><span th:text="${url1select_day_week_month2}"></span></strong>, 범위 : <strong><span th:text="${url1device2}"></span></strong>, 성별 : <strong><span th:text="${url1gender2}"></span></strong>, 연령: <strong><span th:each="url1age2 : ${url1age2}"><span th:text="${url1age2}"></span>,</span></strong></p></a><button class="custom-btn btn-7" type="submit" name="removeUrl1" value="1">삭제</button></form></div>
-<div th:if="${isTrue2}"><form action="/index_result" method="post"><a th:href="@{${url2}}"><p>검색어1 : <strong><span th:text="${url2query1}"></span></strong><span th:if="${!#strings.isEmpty(url2query2)}"> ,검색어2 : <strong><span th:text="${url2query2}"></span></strong></span><span th:if="${!#strings.isEmpty(url2query3)}"> ,검색어3 : <strong><span th:text="${url2query3}"></span></strong></span><span th:if="${!#strings.isEmpty(url2query4)}"> ,검색어4 : <strong><span th:text="${url2query4}"></span></strong></span><span th th:if="${!#strings.isEmpty(url2query5)}"> ,검색어5 : <strong><span th:text="${url2query5}"></span></strong></span> / 비교군1 기간: <strong><span th:text="${url2year1}"></span>-<span th:text="${url2month1}"></span>-<span th:text="${url2day1}"></span>~<span th:text="${url2year2}"></span>-<span th:text="${url2month2}"></span>-<span th:text="${url2day2}"></span></strong>, 단위 : <strong><span th:text="${url2select_day_week_month}"></span></strong>, 범위 : <strong><span th:text="${url2device}"></span></strong>, 성별 : <strong><span th:text="${url2gender}"></span></strong>, 연령: <strong><span th:each="url2age1 : ${url2age1}"><span th:text="${url2age1}"></span>,</span></strong>  비교군2 기간: <strong><span th:text="${url2year3}"></span>-<span th:text="${url2month3}"></span>-<span th:text="${url2day3}"></span></strong>~<strong><span th:text="${url2year4}"></span>-<span th:text="${url2month4}"></span>-<span th:text="${url2day4}"></span></strong>, 단위 : <strong><span th:text="${url2select_day_week_month2}"></span></strong>, 범위 : <strong><span th:text="${url2device2}"></span></strong>, 성별 : <strong><span th:text="${url2gender2}"></span></strong>, 연령: <strong><span th:each="url2age2 : ${url2age2}"><span th:text="${url2age2}"></span>,</span></strong></p></a><button class="custom-btn btn-7" type="submit" name="removeUrl2" value="2">삭제</button></form></div>
-<div th:if="${isTrue3}"><form action="/index_result" method="post"><a th:href="@{${url3}}"><p>검색어1 : <strong><span th:text="${url3query1}"></span></strong><span th:if="${!#strings.isEmpty(url3query2)}"> ,검색어2 : <strong><span th:text="${url3query2}"></span></strong></span><span th:if="${!#strings.isEmpty(url3query3)}"> ,검색어3 : <strong><span th:text="${url3query3}"></span></strong></span><span th:if="${!#strings.isEmpty(url3query4)}"> ,검색어4 : <strong><span th:text="${url3query4}"></span></strong></span><span th th:if="${!#strings.isEmpty(url3query5)}"> ,검색어5 : <strong><span th:text="${url3query5}"></span></strong></span> / 비교군1 기간: <strong><span th:text="${url3year1}"></span>-<span th:text="${url3month1}"></span>-<span th:text="${url3day1}"></span>~<span th:text="${url3year2}"></span>-<span th:text="${url3month2}"></span>-<span th:text="${url3day2}"></span></strong>, 단위 : <strong><span th:text="${url3select_day_week_month}"></span></strong>, 범위 : <strong><span th:text="${url3device}"></span></strong>, 성별 : <strong><span th:text="${url3gender}"></span></strong>, 연령: <strong><span th:each="url3age1 : ${url3age1}"><span th:text="${url3age1}"></span>,</span></strong>  비교군2 기간: <strong><span th:text="${url3year3}"></span>-<span th:text="${url3month3}"></span>-<span th:text="${url3day3}"></span></strong>~<strong><span th:text="${url3year4}"></span>-<span th:text="${url3month4}"></span>-<span th:text="${url3day4}"></span></strong>, 단위 : <strong><span th:text="${url3select_day_week_month2}"></span></strong>, 범위 : <strong><span th:text="${url3device2}"></span></strong>, 성별 : <strong><span th:text="${url3gender2}"></span></strong>, 연령: <strong><span th:each="url3age2 : ${url3age2}"><span th:text="${url3age2}"></span>,</span></strong></p></a><button class="custom-btn btn-7" type="submit" name="removeUrl3" value="3">삭제</button></form></div>
-<div th:if="${isTrue4}"><form action="/index_result" method="post"><a th:href="@{${url4}}"><p>검색어1 : <strong><span th:text="${url4query1}"></span></strong><span th:if="${!#strings.isEmpty(url4query2)}"> ,검색어2 : <strong><span th:text="${url4query2}"></span></strong></span><span th:if="${!#strings.isEmpty(url4query3)}"> ,검색어3 : <strong><span th:text="${url4query3}"></span></strong></span><span th:if="${!#strings.isEmpty(url4query4)}"> ,검색어4 : <strong><span th:text="${url4query4}"></span></strong></span><span th th:if="${!#strings.isEmpty(url4query5)}"> ,검색어5 : <strong><span th:text="${url4query5}"></span></strong></span> / 비교군1 기간: <strong><span th:text="${url4year1}"></span>-<span th:text="${url4month1}"></span>-<span th:text="${url4day1}"></span>~<span th:text="${url4year2}"></span>-<span th:text="${url4month2}"></span>-<span th:text="${url4day2}"></span></strong>, 단위 : <strong><span th:text="${url4select_day_week_month}"></span></strong>, 범위 : <strong><span th:text="${url4device}"></span></strong>, 성별 : <strong><span th:text="${url4gender}"></span></strong>, 연령: <strong><span th:each="url4age1 : ${url4age1}"><span th:text="${url4age1}"></span>,</span></strong>  비교군2 기간: <strong><span th:text="${url4year3}"></span>-<span th:text="${url4month3}"></span>-<span th:text="${url4day3}"></span></strong>~<strong><span th:text="${url4year4}"></span>-<span th:text="${url4month4}"></span>-<span th:text="${url4day4}"></span></strong>, 단위 : <strong><span th:text="${url4select_day_week_month2}"></span></strong>, 범위 : <strong><span th:text="${url4device2}"></span></strong>, 성별 : <strong><span th:text="${url4gender2}"></span></strong>, 연령: <strong><span th:each="url4age2 : ${url4age2}"><span th:text="${url4age2}"></span>,</span></strong></p></a><button class="custom-btn btn-7" type="submit" name="removeUrl4" value="4">삭제</button></form></div>
-<div th:if="${isTrue5}"><form action="/index_result" method="post"><a th:href="@{${url5}}"><p>검색어1 : <strong><span th:text="${url5query1}"></span></strong><span th:if="${!#strings.isEmpty(url5query2)}"> ,검색어2 : <strong><span th:text="${url5query2}"></span></strong></span><span th:if="${!#strings.isEmpty(url5query3)}"> ,검색어3 : <strong><span th:text="${url5query3}"></span></strong></span><span th:if="${!#strings.isEmpty(url5query4)}"> ,검색어4 : <strong><span th:text="${url5query4}"></span></strong></span><span th th:if="${!#strings.isEmpty(url5query5)}"> ,검색어5 : <strong><span th:text="${url5query5}"></span></strong></span> / 비교군1 기간: <strong><span th:text="${url5year1}"></span>-<span th:text="${url5month1}"></span>-<span th:text="${url5day1}"></span>~<span th:text="${url5year2}"></span>-<span th:text="${url5month2}"></span>-<span th:text="${url5day2}"></span></strong>, 단위 : <strong><span th:text="${url5select_day_week_month}"></span></strong>, 범위 : <strong><span th:text="${url5device}"></span></strong>, 성별 : <strong><span th:text="${url5gender}"></span></strong>, 연령: <strong><span th:each="url5age1 : ${url5age1}"><span th:text="${url5age1}"></span>,</span></strong>  비교군2 기간: <strong><span th:text="${url5year3}"></span>-<span th:text="${url5month3}"></span>-<span th:text="${url5day3}"></span></strong>~<strong><span th:text="${url5year4}"></span>-<span th:text="${url5month4}"></span>-<span th:text="${url5day4}"></span></strong>, 단위 : <strong><span th:text="${url5select_day_week_month2}"></span></strong>, 범위 : <strong><span th:text="${url5device2}"></span></strong>, 성별 : <strong><span th:text="${url3gender2}"></span></strong>, 연령: <strong><span th:each="url5age2 : ${url5age2}"><span th:text="${url5age2}"></span>,</span></strong></p></a><button class="custom-btn btn-7" type="submit" name="removeUrl5" value="5">삭제</button></form></div>
+<div>
+    <button id="drawLine" value="line">Line Chart</button>
+    <button id="drawBar" value="bar">Bar Chart</button>
+    <form action="/favorite_url" method="get">
+        <div>
+            <input type="hidden" name="url" id="urlInput" value="">
+            <script th:inline="javascript">
+                if (pageUrl()!="http://localhost:8080/index_result"&&pageUrl()!=[[${url1}]]&&pageUrl()!=[[${url2}]]&&pageUrl()!=[[${url3}]]&&pageUrl()!=[[${url4}]]) {
+                    document.getElementById('urlInput').value = pageUrl();
+                }
+            </script>
+            <button class="btn" type="submit">즐겨찾기 추가</button>
+        </div>
+    </form>
+    <button onclick="window.location.href='/favorite_url'">즐겨찾기 목록</button>
+</div>
+<div id="chart1"></div>
+<div id="chart2"></div>
 </body>
 </html>
