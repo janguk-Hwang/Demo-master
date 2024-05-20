@@ -9,9 +9,11 @@
 }
 #nav-toggle:checked ~ #nav-header {
     width: calc(var(--navbar-width-min) - 16px);
+    z-index: 9999; /* 가장 앞으로 오도록 설정 */
 }
 #nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
     width: var(--navbar-width-min);
+    z-index: 9999; /* 가장 앞으로 오도록 설정 */
 }
 #nav-toggle:checked ~ #nav-header #nav-title {
     opacity: 0;
@@ -60,6 +62,7 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     overflow: hidden;
     user-select: none;
+    z-index: 1000; /* 기본 z-index 설정 */
 }
 #nav-bar hr {
     margin: 0;
@@ -325,7 +328,7 @@ label[for=nav-footer-toggle] {
     border-radius: 99px;
     background-color: #D62929;
 }
- .logout-link {
+.logout-link {
      float: right;
  }
  .item1 { grid-area: header; }
@@ -344,22 +347,6 @@ label[for=nav-footer-toggle] {
             'main main main main main';
     gap: 0px;
     padding: 0px;
-}
-.grid-container > .item1 {
-    max-width: 100%; /* 최대 너비를 100%로 설정하여 넘치지 않도록 합니다. */
-    overflow: hidden; /* 넘치는 부분을 숨깁니다. */
-}
-.grid-container > .item2{
-    max-width: 100%;
-    overflow: hidden;
-}
-.grid-container > div{
-    border-radius: 20px;
-    background-color: #f2f2f2;
-    text-align: center;
-    padding: 0px 0;/*<-요게 간격줄이는거였음*/
-    font-family: "Lato",sans-serif;
-    font-size: 20px;
 }
  .title {
      margin-bottom: 10px; /* 요소 사이에 10px의 공백 추가 */
@@ -483,22 +470,34 @@ button {
 button:hover {
     background-color: gray;
 }
- #chart1 {
-     width: 100%;
-     height: 500px;
-     background-color: #f9f9f9;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-     padding: 20px;
-     box-sizing: border-box;
- }
 
-#chart2 {
-    width: 100%;
-    height: 500px;
+#chart1 {
+    width: 80%;
+    height: 340px;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 20px;
     box-sizing: border-box;
 }
+#chart2 {
+    width: 80%;
+    height: 340px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.card {
+    background: #fff;
+    border-radius: 2px;
+    display: inline-block;
+    height: 300px;
+    position: relative;
+    width: 100%;
+}
+.card-4 {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+

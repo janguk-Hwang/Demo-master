@@ -26,6 +26,10 @@
                 drawChart1('bar');
                 drawChart2('bar');
             });
+            document.getElementById("scatter").addEventListener('click', function() {
+                drawChart1('scatter');
+                drawChart2('scatter');
+            });
 
             drawChart1('line');
             drawChart2('line');
@@ -771,23 +775,24 @@
     </div>
     <button class="custom-btn btn-7 item4" id="search_button" type="submit">LETO 검색 데이터 조회</button>
 </form>
-<div>
-    <button id="drawLine" value="line">Line Chart</button>
-    <button id="drawBar" value="bar">Bar Chart</button>
+<div class="item4">
     <form action="/favorite_url" method="get">
         <div>
+            <button class="custom-btn btn-7" id="drawLine" type="button" value="line">Line Chart</button>
+            <button class="custom-btn btn-7" id="drawBar" type="button" value="bar">Bar Chart</button>
+            <button class="custom-btn btn-7" id="scatter"  type="button" value="scatter">Scatter Chart</button>
             <input type="hidden" name="url" id="urlInput" value="">
             <script th:inline="javascript">
                 if (pageUrl()!="http://localhost:8080/index_result"&&pageUrl()!=[[${url1}]]&&pageUrl()!=[[${url2}]]&&pageUrl()!=[[${url3}]]&&pageUrl()!=[[${url4}]]) {
                     document.getElementById('urlInput').value = pageUrl();
                 }
             </script>
-            <button class="btn" type="submit">즐겨찾기 추가</button>
+            <button class="custom-btn btn-7" type="submit">즐겨찾기 추가</button>
+            <button class="custom-btn btn-7" type="button" onclick="window.location.href='/favorite_url'">즐겨찾기 목록</button>
         </div>
     </form>
-    <button onclick="window.location.href='/favorite_url'">즐겨찾기 목록</button>
 </div>
-<div id="chart1"></div>
-<div id="chart2"></div>
+<div class="card card-4" id="chart1"></div>
+<div class="card card-4" id="chart2"></div>
 </body>
 </html>
