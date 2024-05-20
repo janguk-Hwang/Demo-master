@@ -11,12 +11,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
-public class SecurityConfiguration {
+public class SecurityConfiguration{
 
     private final MemberService memberService;
 
@@ -26,24 +27,30 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public UserAuthenticationFailureHandler getFailureHandler() {
-        return new UserAuthenticationFailureHandler(); // Assuming this is your custom failure handler class
+    UserAuthenticationFailureHandler getFailureHandler() {
+        return new UserAuthenticationFailureHandler();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setMatchingRequestParameterName(null);
 
-        http.csrf(csrf -> csrf.disable()); // Disable CSRF for now (consider enabling for production)
+        http.csrf(csrf -> csrf.disable());
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/static/**", "/images/**", "/css/**", "/js/**") // 정적 리소스에 대한 접근 허용
-                        .permitAll()
-                        .requestMatchers("/", "/member/register", "/member/email-auth", "/member/find/password", "/member/reset/password")
+                        .requestMatchers(
+                                "/",
+                                "/member/register",
+                                "/member/email-auth",
+                                "/member/find/password",
+                                "/member/reset/password"
+                        )
                         .permitAll()
                         .requestMatchers("/admin/**")
                         .hasAuthority("ROLE_ADMIN")
-                        .anyRequest()
+                        .anyRequest() // 나머지 사이트는 권한 요청
                         .authenticated())
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/")
@@ -59,6 +66,8 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
+
 
     protected AuthenticationManager configure(AuthenticationManagerBuilder auth) throws Exception {
 

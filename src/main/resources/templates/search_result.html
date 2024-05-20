@@ -336,11 +336,11 @@
     </style>
     <style>
         .grid-container {
-            display: flex;
+            display: grid;
             align-content: center;
             align-items: center;
-            gap: 10px;
-            padding: 10px;
+            gap: 0px;
+            padding: 0px;
         }
         .grid-container > div{
             display: flex;
@@ -356,7 +356,7 @@
         }
         #chart1 {
             width: 80%;
-            height: 350px;
+            height: 340px;
             background-color: #f9f9f9;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -365,7 +365,7 @@
         }
         #chart2 {
             width: 80%;
-            height: 350px;
+            height: 340px;
             background-color: #f9f9f9;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -379,7 +379,6 @@
             height: 300px;
             position: relative;
             width: 100%;
-            margin-left: 200px;
         }
         .card-4 {
             box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -407,7 +406,7 @@
             height: 40px;
             color: #fff;
             border-radius: 10px;
-            padding: 10px 25px;
+            padding: 0px 0px;
             font-family: '한컴 말랑말랑 Regular', sans-serif;
             font-size: 16px;
             font-weight: 900;
@@ -463,6 +462,10 @@
             document.getElementById("drawBar").addEventListener('click', function() {
                 drawChart1('bar');
                 drawChart2('bar');
+            });
+            document.getElementById("drawScatter").addEventListener('click', function() {
+                drawChart1('scatter');
+                drawChart2('scatter');
             });
 
             drawChart1('line');
@@ -710,54 +713,20 @@
 <a href="/index_result" target="_blank">
     <img src="/Logo.png" alt="Leto 데이터랩 로고" height="146" width="255">
 </a>
-<div id="nav-bar">
-    <input id="nav-toggle" type="checkbox"/>
-    <div id="nav-header"><a id="nav-title" href="/index_result" target="_blank"><i class="fab fa-codepen"></i>LETO Trends</a>
-        <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
-        <hr/>
-    </div>
-    <div id="nav-content">
-        <div class="nav-button" onclick="logout()">
-            <i class="fas fas fa-palette"></i><span>logout</span>
-        </div>
-        <div class="nav-button"><i class="fas fa-images"></i><span>Assets</span></div>
-        <div class="nav-button"><i class="fas fa-thumbtack"></i><span>Pinned Items</span></div>
-        <hr/>
-        <div class="nav-button"><i class="fas fa-heart"></i><span>Following</span></div>
-        <div class="nav-button"><i class="fas fa-chart-line"></i><span>Trending</span></div>
-        <div class="nav-button"><i class="fas fa-fire"></i><span>Challenges</span></div>
-        <div class="nav-button"><i class="fas fa-magic"></i><span>Spark</span></div>
-        <hr/>
-        <div class="nav-button"><i class="fas fa-gem"></i><span>Codepen Pro</span></div>
-        <div id="nav-content-highlight"></div>
-    </div>
-    <input id="nav-footer-toggle" type="checkbox"/>
-    <div id="nav-footer">
-        <div id="nav-footer-heading">
-            <div id="nav-footer-avatar"><img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547"/></div>
-            <div id="nav-footer-titlebox"><a id="nav-footer-title" href="https://codepen.io/uahnbu/pens/public" target="_blank">UserName</a><span id="nav-footer-subtitle">User</span></div>
-            <label for="nav-footer-toggle"><i class="fas fa-caret-up"></i></label>
-        </div>
-        <div id="nav-footer-content">
-            <Lorem>ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Lorem>
-        </div>
-    </div>
-</div>
 <div class="grid-container">
     <div>
-        <a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</a>
         <button class="custom-btn btn-7" id="drawLine" value="line">Line Chart</button>
         <button class="custom-btn btn-7" id="drawBar" value="bar">Bar Chart</button>
+        <button class="custom-btn btn-7" id="drawScatter" value="scatter">Scatter Chart</button>
         <button class="custom-btn btn-7" onclick="window.location.href='/index_result'">검색화면으로</button>
-        <form action="/member/search_result" method="post">
+        <form action="/search_result" method="post">
                 <input type="hidden" name="url" id="urlInput" value="">
                 <script th:inline="javascript">
-                    if (pageUrl()!="http://localhost:8080/member/search_result"&&pageUrl()!=[[${url1}]]&&pageUrl()!=[[${url2}]]&&pageUrl()!=[[${url3}]]&&pageUrl()!=[[${url4}]]) {
+                    if (pageUrl()!="http://localhost:8080/search_result"&&pageUrl()!=[[${url1}]]&&pageUrl()!=[[${url2}]]&&pageUrl()!=[[${url3}]]&&pageUrl()!=[[${url4}]]) {
                         document.getElementById('urlInput').value = pageUrl();
                     }
                 </script>
-                <button class="btn" type="submit">즐겨찾기 추가</button>
+                <button class="custom-btn btn-7" type="submit">즐겨찾기 추가</button>
         </form>
     </div>
 </div>

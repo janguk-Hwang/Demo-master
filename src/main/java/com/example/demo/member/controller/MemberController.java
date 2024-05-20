@@ -64,7 +64,7 @@ public class MemberController {
         //email_auth.html에서 result의 boolean타입을 활용해 뷰를 출력한다.
     }
 
-    @GetMapping("/member/search_result")
+    @GetMapping("/search_result")
     public String search_result( Model model,
                                  @RequestParam(name = "query1", required = false, defaultValue = "") String query1,
                                  @RequestParam(name = "query2", required = false, defaultValue = "") String query2,
@@ -153,10 +153,10 @@ public class MemberController {
             model.addAttribute("seriesData5", query5SeriesData);
             model.addAttribute("series2Data5", query5Series2Data);
         }
-        return "member/search_result";
+        return "search_result";
     }
 
-    @PostMapping("/member/search_result")
+    @PostMapping("/search_result")
     public String search_result( @RequestParam(name = "url", required = false, defaultValue = "") String url,
                                  Principal principal) throws JSONException {
         String userName = principal.getName();
@@ -165,7 +165,7 @@ public class MemberController {
             memberService.setDbFavoriteURL(url,userName);
         }
 
-        return "member/search_result";
+        return "search_result";
     }
 
     @GetMapping("/index_result")
@@ -184,11 +184,69 @@ public class MemberController {
         for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
             favoriteURL = memberService.getDbFavriteURL(userName).get(i);
             ArrayList<String> arrayList = memberService.extractUrl(favoriteURL);
+            ArrayList<String> arrayList2 = memberService.getAge1(favoriteURL);
+            ArrayList<String> arrayList3 = memberService.getAge2(favoriteURL);
 
-            for (int j = 0; j < arrayList.size(); j++) {
-                System.out.print(arrayList.get(j) + " ");
+            if (arrayList2.size()==0){
+                arrayList2.add("전체");
             }
-            System.out.println();
+
+            if (arrayList3.size()==0){
+                arrayList3.add("전체");
+            }
+
+            if (favoriteURL!=""){
+                for (int j = 0; j < arrayList2.size(); j++) {
+                    if (arrayList2.get(j).equals("1")){
+                        arrayList2.set(j,"~12");
+                    } else if (arrayList2.get(j).equals("2")) {
+                        arrayList2.set(j,"13~18");
+                    } else if (arrayList2.get(j).equals("3")) {
+                        arrayList2.set(j,"19~24");
+                    } else if (arrayList2.get(j).equals("4")) {
+                        arrayList2.set(j,"25~29");
+                    } else if (arrayList2.get(j).equals("5")) {
+                        arrayList2.set(j,"30~34");
+                    } else if (arrayList2.get(j).equals("6")) {
+                        arrayList2.set(j,"35~39");
+                    } else if (arrayList2.get(j).equals("7")) {
+                        arrayList2.set(j,"40~44");
+                    } else if (arrayList2.get(j).equals("8")) {
+                        arrayList2.set(j,"45~49");
+                    } else if (arrayList2.get(j).equals("9")) {
+                        arrayList2.set(j,"50~54");
+                    } else if (arrayList2.get(j).equals("10")) {
+                        arrayList2.set(j,"54~59");
+                    } else if (arrayList2.get(j).equals("11")) {
+                        arrayList2.set(j,"60~");
+                    }
+                }
+                for (int j = 0; j < arrayList3.size(); j++) {
+                    if (arrayList3.get(j).equals("1")){
+                        arrayList3.set(j,"~12");
+                    } else if (arrayList3.get(j).equals("2")) {
+                        arrayList3.set(j,"13~18");
+                    } else if (arrayList3.get(j).equals("3")) {
+                        arrayList3.set(j,"19~24");
+                    } else if (arrayList3.get(j).equals("4")) {
+                        arrayList3.set(j,"25~29");
+                    } else if (arrayList3.get(j).equals("5")) {
+                        arrayList3.set(j,"30~34");
+                    } else if (arrayList3.get(j).equals("6")) {
+                        arrayList3.set(j,"35~39");
+                    } else if (arrayList3.get(j).equals("7")) {
+                        arrayList3.set(j,"40~44");
+                    } else if (arrayList3.get(j).equals("8")) {
+                        arrayList3.set(j,"45~49");
+                    } else if (arrayList3.get(j).equals("9")) {
+                        arrayList3.set(j,"50~54");
+                    } else if (arrayList3.get(j).equals("10")) {
+                        arrayList3.set(j,"54~59");
+                    } else if (arrayList3.get(j).equals("11")) {
+                        arrayList3.set(j,"60~");
+                    }
+                }
+            }
 
             if (i == 0&&favoriteURL!="") {
                 model.addAttribute("url1", favoriteURL);
@@ -206,6 +264,7 @@ public class MemberController {
                 model.addAttribute("url1select_day_week_month", arrayList.get(11));
                 model.addAttribute("url1device", arrayList.get(12));
                 model.addAttribute("url1gender", arrayList.get(13));
+                model.addAttribute("url1age1", arrayList2);
                 model.addAttribute("url1year3", arrayList.get(14));
                 model.addAttribute("url1month3", arrayList.get(15));
                 model.addAttribute("url1day3", arrayList.get(16));
@@ -215,6 +274,7 @@ public class MemberController {
                 model.addAttribute("url1select_day_week_month2", arrayList.get(20));
                 model.addAttribute("url1device2", arrayList.get(21));
                 model.addAttribute("url1gender2", arrayList.get(22));
+                model.addAttribute("url1age2", arrayList3);
                 model.addAttribute("isTrue1", isTrue1);
             } else if (i==0&&favoriteURL==""){
                 isTrue1 = false;
@@ -236,6 +296,7 @@ public class MemberController {
                 model.addAttribute("url2select_day_week_month", arrayList.get(11));
                 model.addAttribute("url2device", arrayList.get(12));
                 model.addAttribute("url2gender", arrayList.get(13));
+                model.addAttribute("url2age1", arrayList2);
                 model.addAttribute("url2year3", arrayList.get(14));
                 model.addAttribute("url2month3", arrayList.get(15));
                 model.addAttribute("url2day3", arrayList.get(16));
@@ -245,6 +306,7 @@ public class MemberController {
                 model.addAttribute("url2select_day_week_month2", arrayList.get(20));
                 model.addAttribute("url2device2", arrayList.get(21));
                 model.addAttribute("url2gender2", arrayList.get(22));
+                model.addAttribute("url2age2", arrayList3);
                 model.addAttribute("isTrue2", isTrue2);
             } else if (i==1&&favoriteURL==""){
                 isTrue2 = false;
@@ -266,6 +328,7 @@ public class MemberController {
                 model.addAttribute("url3select_day_week_month", arrayList.get(11));
                 model.addAttribute("url3device", arrayList.get(12));
                 model.addAttribute("url3gender", arrayList.get(13));
+                model.addAttribute("url3age1", arrayList2);
                 model.addAttribute("url3year3", arrayList.get(14));
                 model.addAttribute("url3month3", arrayList.get(15));
                 model.addAttribute("url3day3", arrayList.get(16));
@@ -275,6 +338,7 @@ public class MemberController {
                 model.addAttribute("url3select_day_week_month2", arrayList.get(20));
                 model.addAttribute("url3device2", arrayList.get(21));
                 model.addAttribute("url3gender2", arrayList.get(22));
+                model.addAttribute("url3age2", arrayList3);
                 model.addAttribute("isTrue3", isTrue3);
             } else if (i==2&&favoriteURL==""){
                 isTrue3 = false;
@@ -296,6 +360,7 @@ public class MemberController {
                 model.addAttribute("url4select_day_week_month", arrayList.get(11));
                 model.addAttribute("url4device", arrayList.get(12));
                 model.addAttribute("url4gender", arrayList.get(13));
+                model.addAttribute("url4age1", arrayList2);
                 model.addAttribute("url4year3", arrayList.get(14));
                 model.addAttribute("url4month3", arrayList.get(15));
                 model.addAttribute("url4day3", arrayList.get(16));
@@ -305,6 +370,7 @@ public class MemberController {
                 model.addAttribute("url4select_day_week_month2", arrayList.get(20));
                 model.addAttribute("url4device2", arrayList.get(21));
                 model.addAttribute("url4gender2", arrayList.get(22));
+                model.addAttribute("url4age2", arrayList3);
                 model.addAttribute("isTrue4", isTrue4);
             } else if (i==3&&favoriteURL==""){
                 isTrue4 = false;
@@ -326,6 +392,7 @@ public class MemberController {
                 model.addAttribute("url5select_day_week_month", arrayList.get(11));
                 model.addAttribute("url5device", arrayList.get(12));
                 model.addAttribute("url5gender", arrayList.get(13));
+                model.addAttribute("url5age1", arrayList2);
                 model.addAttribute("url5year3", arrayList.get(14));
                 model.addAttribute("url5month3", arrayList.get(15));
                 model.addAttribute("url5day3", arrayList.get(16));
@@ -335,6 +402,7 @@ public class MemberController {
                 model.addAttribute("url5select_day_week_month2", arrayList.get(20));
                 model.addAttribute("url5device2", arrayList.get(21));
                 model.addAttribute("url5gender2", arrayList.get(22));
+                model.addAttribute("url5age2", arrayList3);
                 model.addAttribute("isTrue5", isTrue5);
             } else if (i==4&&favoriteURL==""){
                 isTrue5 = false;

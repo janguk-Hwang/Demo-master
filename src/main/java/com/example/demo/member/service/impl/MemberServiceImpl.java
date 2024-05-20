@@ -416,7 +416,6 @@ public class MemberServiceImpl implements MemberService {
         String regexPattern23 = keyword23 + "(.*?)" + keyword24;
         String regexPattern24 = keyword24 + "(.*?)" + keyword25;
 
-
         Pattern pattern1 = Pattern.compile(regexPattern1);
         Pattern pattern2 = Pattern.compile(regexPattern2);
         Pattern pattern3 = Pattern.compile(regexPattern3);
@@ -693,6 +692,42 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
 
         return true;
+    }
+
+    @Override
+    public ArrayList<String> getAge1(String str) {
+        String[] arr = new String[13];
+        String[] arr3 = new String[13];
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        arr = str.split("&age=");
+        arr3 = arr[arr.length-1].split("&year3=");
+
+        for (int i = 1; i < arr.length-1; i++) {
+            arrayList.add(arr[i]);
+            if (i==arr.length-2){
+                arrayList.add(arr3[0]);
+            }
+        }
+        return arrayList;
+    }
+
+    @Override
+    public ArrayList<String> getAge2(String str) {
+        String[] arr = new String[13];
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        arr = str.split("&age=");
+
+        String[] arr2 = new String[13];
+
+        arr2 = arr[arr.length-1].split("&age2=");
+
+        for (int i = 1; i < arr2.length; i++) {
+            arrayList.add(arr2[i]);
+        }
+
+        return arrayList;
     }
 
     @Override

@@ -52,4 +52,7 @@ public interface MemberService extends UserDetailsService {
 
     boolean setRemoveUrl5(String username);
 
+    ArrayList<String> getAge1(String str);
+    ArrayList<String> getAge2(String str);
+
 }
