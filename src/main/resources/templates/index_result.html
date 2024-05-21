@@ -2,7 +2,6 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <title>메인 페이지</title>
     <link rel="shortcut icon" type="image/x-icon" href="/Logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -784,15 +783,29 @@
     <button class="custom-btn btn-7 item4" id="search_button" type="submit">LETO 검색 데이터 조회</button>
 </form>
 <div class="item4">
-    <form action="/favorite_url" method="get">
+    <form action="/favorite_url" onsubmit="return clickAlert()" method="get">
         <div>
             <button class="custom-btn btn-7" id="drawLine" type="button" value="line">Line Chart</button>
             <button class="custom-btn btn-7" id="drawBar" type="button" value="bar">Bar Chart</button>
             <button class="custom-btn btn-7" id="scatter"  type="button" value="scatter">Scatter Chart</button>
+            <button class="custom-btn btn-7" type="button" onclick="window.location.href='home'">홈으로</button>
             <input type="hidden" name="url" id="urlInput" value="">
             <script th:inline="javascript">
                 if (pageUrl()!="http://localhost:8080/index_result"&&pageUrl()!=[[${url1}]]&&pageUrl()!=[[${url2}]]&&pageUrl()!=[[${url3}]]&&pageUrl()!=[[${url4}]]) {
                     document.getElementById('urlInput').value = pageUrl();
+                }
+                function clickAlert() {
+                    var inputValue = document.getElementById('urlInput').value;
+                    if (pageUrl()==="http://localhost:8080/index_result") {
+                        alert("검색후 즐겨찾기하실수 있습니다.");
+                        return false;
+                    } else if (pageUrl()===[[${url1}]]||pageUrl()===[[${url2}]]||pageUrl()===[[${url3}]]||pageUrl()===[[${url4}]]||pageUrl()===[[${url5}]]) {
+                        alert("동일한 검색조건은 즐겨찾기하실 수없습니다.")
+                        return false;
+                    }else if ([[${isTrueAll}]]) {
+                        alert("즐겨찾기는 5개까지 추가가능합니다.")
+                        return false;
+                    }
                 }
             </script>
             <button class="custom-btn btn-7" type="submit">즐겨찾기 추가</button>

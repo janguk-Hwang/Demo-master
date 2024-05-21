@@ -80,7 +80,6 @@ public class MemberController {
         boolean isTrue3 = true;
         boolean isTrue4 = true;
         boolean isTrue5 = true;
-        boolean isTrueAll = false;
 
         for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
             favoriteURL = memberService.getDbFavriteURL(userName).get(i);
@@ -310,10 +309,6 @@ public class MemberController {
                 model.addAttribute("isTrue5", isTrue5);
             }
         }
-        if (isTrue1==true || isTrue2==true || isTrue3==true || isTrue4==true || isTrue5==true){
-            isTrueAll=true;
-            model.addAttribute("isTrueAll", isTrueAll);
-        }
 
         return "favorite_url";
     }
@@ -329,7 +324,7 @@ public class MemberController {
                                 Principal principal) throws JSONException {
         String userName = principal.getName();
 
-        if (removeAllUrl.equals("즐겨찾기 전체 삭제")){
+        if (removeAllUrl.equals("1")){
             memberService.setRemoveAllUrl(userName);
         }
         if (removeUrl1.equals("1")) {
@@ -512,11 +507,6 @@ public class MemberController {
             }
         }
 
-        if (isTrue1==true || isTrue2==true || isTrue3==true || isTrue4==true || isTrue5==true){
-            isTrueAll=true;
-            model.addAttribute("isTrueAll", isTrueAll);
-        }
-
         return "favorite_url";
     }
 
@@ -610,18 +600,46 @@ public class MemberController {
             model.addAttribute("series2Data5", query5Series2Data);
         }
 
+        boolean isTrue1 = true;
+        boolean isTrue2 = true;
+        boolean isTrue3 = true;
+        boolean isTrue4 = true;
+        boolean isTrue5 = true;
+        boolean isTrueAll = true;
+
+        for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
+            favoriteURL = memberService.getDbFavriteURL(userName).get(i);
+
+            if (i==0&&favoriteURL==""){
+                isTrue1 = false;
+            }
+            if (i==1&&favoriteURL==""){
+                isTrue2 = false;
+            }
+            if (i==2&&favoriteURL==""){
+                isTrue3 = false;
+            }
+            if (i==3&&favoriteURL==""){
+                isTrue4 = false;
+            }
+            if (i==4&&favoriteURL==""){
+                isTrue5 = false;
+            }
+
+            if (isTrue1==true&&isTrue2==true&&isTrue3==true&&isTrue4==true&&isTrue5==true){
+                model.addAttribute("isTrueAll", isTrueAll);
+            } else {
+                isTrueAll = false;
+                model.addAttribute("isTrueAll", isTrueAll);
+            }
+        }
+
         return "index_result";
     }
-
-    @PostMapping("/index_result")
-    public String search(Principal principal,
-
-                         Model model) {
-        String userName = principal.getName();
-
-        return "index_result";
+    @GetMapping("/home")
+    public String home_service() {
+        return "home";
     }
-
 
 
     @GetMapping("/member/reset/password")
