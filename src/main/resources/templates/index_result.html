@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://ssl.pstatic.net/static.datalab/202405030736/css/graph.css">
     <link rel="stylesheet" href="index_result.css">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="dark-mode.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script th:inline="javascript">
 
@@ -87,6 +88,9 @@
                 legendData.push('[[${query5}]]');
             }
 
+            // 다크 모드 활성화 여부 확인
+            const isDarkMode = document.body.classList.contains('dark-mode');
+
             let option = {
                 tooltip: {
                     trigger: 'item',
@@ -94,10 +98,10 @@
                         var x = 150; // x 좌표 조절
                         var y = 50; // y 좌표 조절
                         console.log(point[0])
-                        if(point[0]<510){
+                        if (point[0] < 510) {
                             return [point[0], point[1] - y];
-                        } else if (point[0]>510){
-                            return [point[0]-x, point[1] - y];
+                        } else if (point[0] > 510) {
+                            return [point[0] - x, point[1] - y];
                         }
                     }
                 },
@@ -109,14 +113,27 @@
                     containLabel: true
                 },
                 legend: {
-                    data: legendData
+                    data: legendData,
+                    textStyle: {
+                        color: isDarkMode ? '#ffffff' : '#000000' // 다크 모드에 따른 색상 변경
+                    }
                 },
                 xAxis: {
                     type: 'category',
-                    data: xAxisData
+                    data: xAxisData,
+                    axisLine: {
+                        lineStyle: {
+                            color: isDarkMode ? '#ffffff' : '#000000' // 다크 모드에 따른 색상 변경
+                        }
+                    }
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: isDarkMode ? '#ffffff' : '#000000' // 다크 모드에 따른 색상 변경
+                        }
+                    }
                 },
                 series: [
                     {
@@ -156,6 +173,8 @@
                 }
             };
             myChart1.setOption(option);
+
+            // 현재 차트 형태를 저장
         }
 
         function drawChart2(type) {
@@ -271,15 +290,13 @@
                 }
             };
             myChart2.setOption(option);
+            // 현재 차트 형태를 저장
         }
-    </script>
-    <script>
+
         function logout() {
             alert('로그아웃되었습니다.');
             window.location.href = '/member/logout';
         }
-    </script>
-    <script>
         function toggleAllCheckboxes(group, source) {
             const checkboxes = document.querySelectorAll(`input[name=${group}]`);
             checkboxes.forEach(checkbox => {
@@ -330,8 +347,6 @@
                 }
             });
         });
-    </script>
-    <script>
         document.addEventListener('DOMContentLoaded', function () {
             for (let i = 1; i <= 4; i++) {
                 const yearSelect = document.getElementById(`selectYear${i}`);
@@ -439,12 +454,13 @@
 </head>
 <body>
 <a href="/index_result">
-    <img src="/Logo.png" alt="Leto 데이터랩 로고" height="146" width="255">
+    <img id="logo" src="/Logo.png" alt="Leto 데이터랩 로고" height="146" width="255">
 </a>
 <form action="index_result" method="get" id="myForm">
     <div id="nav-bar">
         <input id="nav-toggle" type="checkbox" checked/>
-        <div id="nav-header"><a id="nav-title" href="/index_result" target="_blank"><i class="fab fa-codepen"></i>LETO Trends</a>
+        <div id="nav-header">
+            <a id="nav-title" href="/index_result" target="_blank"><i class="fab fa-codepen"></i>LETO Trends</a>
             <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
             <hr/>
         </div>
@@ -452,7 +468,59 @@
             <div class="nav-button" onclick="logout()">
                 <i class="fas fas fa-palette"></i><span>logout</span>
             </div>
-            <div class="nav-button"><i class="fas fa-images"></i><span>Assets</span></div>
+            <div class="nav-button dark-mode-toggle">
+                <i class="fas fa-images"></i><span>Dark Mode</span>
+                <!-- 다크 모드 상태를 나타내는 스위치 아이콘 추가 -->
+                <i id="dark-mode-icon" class="fas fa-toggle-off" style="margin-left: 8px;"></i>
+                <script>
+                    document.querySelector('.dark-mode-toggle').addEventListener("click", function() {
+                        const darkModeIcon = document.getElementById('dark-mode-icon');
+                        const logo = document.getElementById('logo');
+                        if (document.body.classList.contains('dark-mode')) {
+                            document.body.classList.remove("dark-mode");
+                            document.body.setAttribute('data-theme', 'light');
+                            darkModeIcon.classList.remove("fa-toggle-on");
+                            darkModeIcon.classList.add("fa-toggle-off");
+                            logo.src = "/Logo.png";
+                            // 다크 모드 비활성화 상태를 로컬 스토리지에 저장
+                            localStorage.setItem('darkMode', 'false');
+                        } else {
+                            document.body.classList.add("dark-mode");
+                            document.body.setAttribute('data-theme', 'dark');
+                            darkModeIcon.classList.remove("fa-toggle-off");
+                            darkModeIcon.classList.add("fa-toggle-on");
+                            logo.src = "/DarkLogo.jpg";
+                            // 다크 모드 활성화 상태를 로컬 스토리지에 저장
+                            localStorage.setItem('darkMode', 'true');
+                        }
+                        // 다크 모드 전환 시 차트를 다시 그리기
+                    });
+
+                    // 페이지 로드 시 로컬 스토리지에서 다크 모드 상태를 읽어오는 함수
+                    function loadDarkMode() {
+                        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+                        const darkModeIcon = document.getElementById('dark-mode-icon');
+                        const logo = document.getElementById('logo');
+                        if (isDarkMode) {
+                            document.body.classList.add("dark-mode");
+                            document.body.setAttribute('data-theme', 'dark');
+                            darkModeIcon.classList.remove("fa-toggle-off");
+                            darkModeIcon.classList.add("fa-toggle-on");
+                            logo.src = "/DarkLogo.jpg";
+                        } else {
+                            document.body.classList.remove("dark-mode");
+                            document.body.setAttribute('data-theme', 'light');
+                            darkModeIcon.classList.remove("fa-toggle-on");
+                            darkModeIcon.classList.add("fa-toggle-off");
+                            logo.src = "/Logo.png";
+                        }
+                        // 페이지 로드 시 다크 모드 상태에 따라 이전에 선택된 차트 형태로 차트를 다시 그리기
+                    }
+
+                    // 페이지 로드 시 다크 모드 상태를 설정
+                    document.addEventListener("DOMContentLoaded", loadDarkMode);
+                </script>
+            </div>
             <div class="nav-button"><i class="fas fa-thumbtack"></i><span>Pinned Items</span></div>
             <hr/>
             <div class="nav-button"><i class="fas fa-heart"></i><span>Following</span></div>
@@ -467,7 +535,10 @@
         <div id="nav-footer">
             <div id="nav-footer-heading">
                 <div id="nav-footer-avatar"><img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547"/></div>
-                <div id="nav-footer-titlebox"><a id="nav-footer-title" href="https://codepen.io/uahnbu/pens/public" target="_blank">UserName</a><span id="nav-footer-subtitle">User</span></div>
+                <div id="nav-footer-titlebox">
+                    <a id="nav-footer-title" href="https://codepen.io/uahnbu/pens/public" target="_blank">UserName</a>
+                    <span id="nav-footer-subtitle">User</span>
+                </div>
                 <label for="nav-footer-toggle"><i class="fas fa-caret-up"></i></label>
             </div>
             <div id="nav-footer-content">

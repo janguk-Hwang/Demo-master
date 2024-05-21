@@ -357,9 +357,30 @@ hr.hr-1 {
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
- body {
-     background: #f2f2f2;
- }
+/* 기본 라이트 모드 스타일 */
+body {
+    color: #18283b;
+    background-color: #f2f2f2;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 다크 모드 스타일 */
+body.dark-mode {
+    color: #f2f2f2;
+    background-color: #18283b;
+}
+
+body.dark-mode .custom-btn{
+    color: #f2f2f2;
+    background-color: #18283b;
+}
+
+/* 버튼 스타일 */
+#toggle {
+    margin: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
 h1 {
     position: relative;
     text-align: center;
@@ -394,7 +415,7 @@ button {
 .custom-btn {
     width: 200px;
     height: 40px;
-    color: #fff;
+    color: #353535;
     border-radius: 10px;
     padding: 10px 25px;
     font-family: '한컴 말랑말랑 Regular', sans-serif;
@@ -471,6 +492,11 @@ button:hover {
     background-color: gray;
 }
 
+body.dark-mode {
+    color: #f2f2f2;
+    background-color: #18283b;
+}
+
 #chart1 {
     width: 80%;
     height: 340px;
@@ -480,6 +506,11 @@ button:hover {
     padding: 20px;
     box-sizing: border-box;
 }
+
+body.dark-mode #chart1 {
+    background-color: #353535;
+}
+
 #chart2 {
     width: 80%;
     height: 340px;
@@ -489,15 +520,28 @@ button:hover {
     padding: 20px;
     box-sizing: border-box;
 }
+
+body.dark-mode #chart2 {
+    background-color: #353535;
+}
+
 .card {
-    background: #fff;
+    background: #f9f9f9; /* 변경사항: 라이트 모드에서의 배경색을 명시 */
     border-radius: 2px;
     display: inline-block;
     height: 300px;
     position: relative;
     width: 100%;
 }
+
+body.dark-mode .card {
+    background: #353535;
+}
+
 .card-4 {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
+
+/* .card-4에 대한 다크 모드 스타일은 이미 적절하므로 변경할 필요 없음 */
+
 
