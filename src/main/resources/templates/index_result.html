@@ -12,10 +12,19 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script th:inline="javascript">
+
+        var myChart1;
+        var myChart2;
+
         function pageUrl() {
             var sHref = decodeURI(location.href);
             return sHref;
         }
+
+        window.addEventListener('resize', function() {
+            myChart1.resize();
+            myChart2.resize();
+        });
 
         window.onload = function() {
             document.getElementById("drawLine").addEventListener('click', function() {
@@ -36,7 +45,7 @@
         };
 
         function drawChart1(type) {
-            var myChart = echarts.init(document.getElementById('chart1'));
+            myChart1 = echarts.init(document.getElementById('chart1'));
 
             var xAxisData = [[${xAxisData}]];
             let seriesData1 = [[${seriesData1}]];
@@ -147,11 +156,11 @@
                     position: 'top',
                 }
             };
-            myChart.setOption(option);
+            myChart1.setOption(option);
         }
 
         function drawChart2(type) {
-            var myChart = echarts.init(document.getElementById('chart2'));
+            myChart2 = echarts.init(document.getElementById('chart2'));
 
             var xAxisData = [[${xAxis2Data}]];
             let seriesData1 = [[${series2Data1}]];
@@ -262,7 +271,7 @@
                     position: 'top',
                 }
             };
-            myChart.setOption(option);
+            myChart2.setOption(option);
         }
     </script>
     <script>
@@ -323,7 +332,6 @@
             });
         });
     </script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             for (let i = 1; i <= 4; i++) {
